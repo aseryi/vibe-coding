@@ -2,6 +2,10 @@
 
 A physics simulation of a ball bouncing inside an ellipse.
 
+## Initial Prompt
+
+> Please create code that will show a particle bouncing inside of an ellipse.
+
 ## Files
 
 - `ellipse_bounce.py` - Interactive animation showing a ball bouncing inside an elliptical boundary

@@ -2,6 +2,10 @@
 
 A visual and auditory demonstration of different sorting algorithms.
 
+## Initial Prompt
+
+> Could you please write the code to illustrate different algorithms of sorting of numbers? Make it graphical. Imagine that there are twenty numbers of different random values, represented by vertical bars of corresponding height. The code should show how the sorting works (for example) flipping two neighboring bars, if they are not in order. Would be good to run it for several different sorting methods, and also record how much time each method will take (fix the time between operation, such as flipping the order of two bars).
+
 ## Features
 
 - Visualizes 5 sorting algorithms: Bubble Sort, Selection Sort, Insertion Sort, Quick Sort, Merge Sort
@@ -14,6 +18,7 @@ A visual and auditory demonstration of different sorting algorithms.
 - `sorting_visualizer.py` - Interactive visualization with sound
 - `sorting_visualizer_record.py` - Script to record the animation as MP4
 - `sorting_algorithms.mp4` - Pre-recorded video of all algorithms
+- `sorting_algorithms.gif` - Pre-recorded animated GIF
 
 ## Run
 
