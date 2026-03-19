@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.1.6)  27 FEB 2026 07:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.1.6)  19 MAR 2026 11:24
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -523,22 +523,22 @@ File: biblatex.cfg
 (./eic-lhec-ipac26-r1.aux)
 \openout1 = `eic-lhec-ipac26-r1.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
 \AtBeginShipoutBox=\box33
-Package hyperref Info: Link coloring OFF on input line 15.
+Package hyperref Info: Link coloring OFF on input line 16.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
@@ -552,9 +552,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count315
 )
-LaTeX Info: Redefining \ref on input line 15.
-LaTeX Info: Redefining \pageref on input line 15.
-LaTeX Info: Redefining \nameref on input line 15.
+LaTeX Info: Redefining \ref on input line 16.
+LaTeX Info: Redefining \pageref on input line 16.
+LaTeX Info: Redefining \nameref on input line 16.
  (./eic-lhec-ipac26-r1.out) (./eic-lhec-ipac26-r1.out)
 \@outlinefile=\write4
 \openout4 = `eic-lhec-ipac26-r1.out'.
@@ -631,78 +631,88 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'eic-lhec-ipac26-r1.bbl' not found.
 
 No file eic-lhec-ipac26-r1.bbl.
-Package biblatex Info: Reference section=0 on input line 15.
-Package biblatex Info: Reference segment=0 on input line 15.
-[1
+Package biblatex Info: Reference section=0 on input line 16.
+Package biblatex Info: Reference segment=0 on input line 16.
 
-{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 6
-4.
+Overfull \hbox (4.77354pt too wide) in paragraph at lines 19--19
+ [][] 
+ []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--25
+
+ []
+
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 4
+2.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 64.
- [2] [3] [4]
-[5] [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 386--388
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 42.
+ [1
+
+{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+ [4] [5]
+[6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 364--366
 []\OT1/cmr/m/n/10 A sam-ple of EIC project pa-ram-e-ters. []$\OT1/cmtt/m/n/10 h
 ttps : / / eic . jlab . org / Documents / EIC-[]General /
  []
 
-<eic-project-layout.pdf, id=106, 712.6625pt x 697.60625pt>
+<eic-project-layout.pdf, id=110, 712.6625pt x 697.60625pt>
 File: eic-project-layout.pdf Graphic file (type pdf)
 <use eic-project-layout.pdf>
-Package pdftex.def Info: eic-project-layout.pdf  used on input line 412.
+Package pdftex.def Info: eic-project-layout.pdf  used on input line 390.
 (pdftex.def)             Requested size: 328.82707pt x 321.87143pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<rhic-to-eic-lhec-layout.pdf, id=108, 396.48125pt x 697.60625pt>
+<rhic-to-eic-lhec-layout.pdf, id=112, 396.48125pt x 697.60625pt>
 File: rhic-to-eic-lhec-layout.pdf Graphic file (type pdf)
 <use rhic-to-eic-lhec-layout.pdf>
-Package pdftex.def Info: rhic-to-eic-lhec-layout.pdf  used on input line 422.
+Package pdftex.def Info: rhic-to-eic-lhec-layout.pdf  used on input line 400.
 (pdftex.def)             Requested size: 248.96957pt x 438.06789pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 433.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 411.
 [8] [9 <./eic-project-layout.pdf>] [10 <./rhic-to-eic-lhec-layout.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 433.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 411.
 
 (./eic-lhec-ipac26-r1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 433.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 433.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 411.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 411.
 Package rerunfilecheck Info: File `eic-lhec-ipac26-r1.out' has not changed.
-(rerunfilecheck)             Checksum: 4B0E013355CA74D420E0C8838DFE09BC;810.
+(rerunfilecheck)             Checksum: D554A29ABB15DAF7E899B9787D31559D;765.
 Package logreq Info: Writing requests to 'eic-lhec-ipac26-r1.run.xml'.
 \openout1 = `eic-lhec-ipac26-r1.run.xml'.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 433.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 411.
  ) 
 Here is how much of TeX's memory you used:
- 13185 strings out of 492163
- 225846 string characters out of 6125307
- 726112 words of memory out of 5000000
- 17351 multiletter control sequences out of 15000+600000
- 8576 words of font info for 32 fonts, out of 8000000 for 9000
+ 13187 strings out of 492163
+ 225866 string characters out of 6125307
+ 721134 words of memory out of 5000000
+ 17352 multiletter control sequences out of 15000+600000
+ 9230 words of font info for 34 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  40i,6n,33p,1009b,743s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
-></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
-</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></
-usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
-r/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
-local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/lo
-cal/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
-/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
-texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/te
-xlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on eic-lhec-ipac26-r1.pdf (10 pages, 1661400 bytes).
+</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+/usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></u
+sr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
+/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/l
+ocal/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/loc
+al/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/
+texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
+exlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
+live/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on eic-lhec-ipac26-r1.pdf (10 pages, 1674804 bytes).
 PDF statistics:
- 206 PDF objects out of 1000 (max. 8388607)
+ 207 PDF objects out of 1000 (max. 8388607)
  174 compressed objects within 2 object streams
- 46 named destinations out of 1000 (max. 500000)
- 119 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 45 named destinations out of 1000 (max. 500000)
+ 111 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -9,8 +9,9 @@
 \usepackage{biblatex}
 
 \title{Accelerator Design Educational Primer -- Conceptualizing and Optimizing the Hybrid LHeC-like Electron-Ion Collider Design}
-\author{Initial internal version: July 14, 2025. Updated for IPAC26 DRAFT:}
-\date{February 27, 2026}
+\author{Initial internal version -- A.Seryi, July 14, 2025. March 2026 -- being updated for IPAC26.}
+\date{March 19, 2026}
+ 
 
 \begin{document}
 
@@ -18,39 +19,16 @@
 
 \section{Abstract}
 
+{\it \bf Note that the latest version being prepared for IPAC26 by the team of authors is in Overleaf -- view the draft here:} \url{https://www.overleaf.com/read/xfsncsysmktg#9f81ed}
+
+~\\
+
 The Electron-Ion Collider (EIC) Mission Need requires $\sqrt{s}$ = 20-100 GeV (upgradable to 140 GeV) and luminosity 10$^{33}$-10$^{34}$ cm$^{-2}$ s$^{-1}$. The current ring-ring baseline achieves the full scope, including $\sim$10$^{34}$ cm$^{-2}$ s$^{-1}$ across all energies. However, when the design is re-optimized for the lower boundary -- accepting $\sim$10$^{33}$ cm$^{-2}$ s$^{-1}$ and prioritizing cost -- an alternative configuration emerges as more advantageous: a hybrid LHeC-like electron accelerator using multi-pass energy recovery linacs (ERL).
 This solution reduces electron-beam power by roughly an order of magnitude, yielding nearly a factor of two reduction in total project cost compared with the present baseline while still satisfying the minimum physics requirements. The study performs parametric cost and performance modeling, augmented by AI-driven optimization, to explore this design space.
 Serving primarily as an educational exercise for the next generation of accelerator physicists and engineers, the paper demonstrates modern design methods: rapid parametric scans, cost-driven optimization, and integration of AI tools. It examines technical feasibility, identifies critical R\&D (high-current ERL operation, beam-beam effects, synchronization, etc.), and discusses how such re-optimization studies can be used to train designers in an era when artificial intelligence dramatically expands exploration of complex accelerator parameter spaces.
 
-\section{Preamble}
-
-EDIT OR MOVE TEXT BELOW (This is my LinkedIn post)
-
-Educating Future Accelerator Scientists in the AI Era
-
-The emergence of AI-assisted coding presents both unique challenges and unprecedented opportunities for accelerator physics education. Institutions like Fermilab, which hosts the US Particle Accelerator School , and CERN, home to the CERN Accelerator School CAS, need to rapidly adapt their pedagogical approaches to this new reality.
-
-The animation below demonstrates what's now possible: using Claude Code AI, we created a simulation of electron-positron beam collisions in just minutes, from a paragraph-long prompt. You can explore the full example at https://lnkd.in/ep2pxya8
-
-This capability suggests a transformative shift in how students learn. Rather than passively attending lectures or running decades-old legacy codes, students could actively create simplified simulation codes, then iteratively refine them through AI-assisted modifications to explore different physics phenomena.
-For instance, with the beam-beam collision example, students could progressively enhance their understanding by:
-
-Converting to physical units
-
-Implementing realistic beam distributions with emittance and beta-functions
-
-Adding luminosity calculations
-
-Investigating how luminosity depends on disruption parameters and beam offsets
-
-Critically, students would develop diagnostic tests to verify that physics principles are correctly implemented -- learning to validate AI-generated code against their understanding of the underlying physics.
-
-This approach ensures that as we leverage AI tools, we continue developing human experts capable of designing and building the accelerators and colliders of tomorrow. The goal isn't to replace human expertise, but to accelerate its development while maintaining rigor and deep understanding.
-
 
 \section{Introduction}
-
-EDIT TEXT BELOW
 
 The Electron-Ion Collider (EIC) is a proposed facility to probe the structure of nucleons and nuclei at high energies. The standard EIC design aims for a luminosity in the range of $10^{33}$ cm$^{-2}$ s$^{-1}$ to $10^{34}$ cm$^{-2}$ s$^{-1}$ (average luminosity), as defined in the CD0 mission need statement. The EIC is designed as a classical ring-ring collider, with electron and proton storage rings, providing collisions. 
 
