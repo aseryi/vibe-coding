@@ -60,7 +60,7 @@ Serving primarily as an educational exercise for the next generation of accelera
 
 Educating future accelerator scientists in the AI era require developing new approaches. This paper is not an ultimate answer, but just a small step, hopefully in the right direction, along the path of finding optimal methodology of transferring knowledge to the new generation in the new world of unprecedented acceleration of analysis, simulations, and coding, due to proliferation of AI.    
 
-The emergence of AI-assisted coding presents both unique challenges and unprecedented opportunities for accelerator physics education. Institutions like Fermilab, which hosts the US Particle Accelerator School , and CERN, home to the CERN Accelerator School CAS, need to rapidly adapt their pedagogical approaches to this new reality. Launch of the Genesis program in the US further encourages use of AI for accelerated design of particle accelerators. 
+The emergence of AI-assisted coding presents both unique challenges and unprecedented opportunities for accelerator physics education. Institutions like Fermilab, which hosts the US Particle Accelerator School , and CERN, home to the CERN Accelerator School CAS, need to rapidly adapt their pedagogical approaches to this new reality. Launch of the Genesis program \cite{Genesis} in the US further encourages use of AI for accelerated design of particle accelerators. 
 
 In this paper, we will try to mimic what can be done in one-week USPAS course on accelerator design, where students typically analyze and collectively develop a mini project. Past examples of such USPAS mini-projects are compact LWFA-fed ring light source \cite{USPAS2016} or ERL-based EUV ligh source \cite{USPAS2023}. 
 
@@ -70,64 +70,49 @@ Those projects mentioned above were performed without use of AI. For the present
 
 The EIC-LHeC mini-project is conceived in the spirit of a one-week USPAS accelerator design course, where a small team of students is given a specific design challenge and expected to produce a self-consistent conceptual study by the end of the week. Past USPAS mini-projects -- such as a compact LWFA-fed ring light source~\cite{USPAS2016} and an ERL-based EUV light source~\cite{USPAS2023} -- were completed without AI assistance. The present work uses the same pedagogical framework, but now assumes that students have access to modern AI tools throughout every stage of the design process.
 
-The mini-project assignment can be stated as follows: \textit{Given the EIC proton beam stored in the RHIC-derived Hadron Storage Ring, design the simplest and most cost-effective electron accelerator complex that satisfies the EIC CD0 Mission Need lower boundary -- a center-of-mass energy of $\sqrt{s} \approx 29$--100~GeV and an average luminosity of $\mathcal{L} \sim 10^{33}$~cm$^{-2}$s$^{-1}$ -- and estimate its cost relative to the ring-ring baseline.}
+The mini-project assignment can be stated as follows: \textit{Given the EIC proton beam stored in the RHIC-derived Hadron Storage Ring, design the simplest and most cost-effective electron accelerator complex that satisfies the EIC CD0 Mission Need lower boundary -- a center-of-mass energy of $\sqrt{s} \approx 29$--100~GeV and the luminosity of $\mathcal{L} \sim 10^{33}$~cm$^{-2}$s$^{-1}$ -- and estimate its cost.}
 
 The motivation for this re-examination comes from discussions at the European Strategy for Particle Physics (ESPP) Open Symposium in July~2025~\cite{ESPP}, where it was argued that inserting a new electron storage ring into the LHC tunnel for LHeC would be both cost-prohibitive and luminosity-limiting. This observation prompted the question: could a similar trade-off -- replacing an electron storage ring with a superconducting energy-recovery linac (ERL) -- be beneficial in the EIC context as well?
 
-The proposed hybrid configuration keeps the full EIC proton beam infrastructure intact and replaces the electron storage ring with a multi-pass ERL, inspired by the LHeC linac-ring design~\cite{ESPP-LHeC-submission}. Electrons are accelerated in a superconducting RF (SRF) linac, transported through recirculation arcs, brought to collision, and then decelerated back through the linac, recovering most of the beam energy. This approach has several appealing features compared to the ring-ring baseline:
+The proposed hybrid configuration keeps the full EIC proton beam infrastructure intact and replaces the electron storage ring with a multi-pass ERL, inspired by the LHeC linac-ring design~\cite{ESPP-LHeC}. Electrons are accelerated in a superconducting RF (SRF) linac, transported through recirculation arcs, brought to collision, and then decelerated back through the linac, recovering most of the beam energy. 
 
-\begin{itemize}
-    \item The electron beam power is reduced by roughly an order of magnitude, since each electron bunch is used only once rather than stored for millions of turns.
-    \item The absence of a large electron storage ring substantially reduces civil construction and magnet costs.
-    \item A 6~GeV SRF linac traversed three times reaches 18~GeV, covering the full EIC energy range without additional hardware.
-    \item The electron beam emittance can in principle be kept very small, since it is set at the injector and not blown up by synchrotron radiation in a ring.
-\end{itemize}
+This approach has several appealing features compared to the ring-ring baseline: a) the electron beam power can be reduced by roughly an order of magnitude, since each electron bunch is used only once, and therefore its disruption at the IP can be large; b) the absence of a large electron storage ring substantially reduces civil construction and magnet costs; c) a 6~GeV SRF linac traversed three times reaches 18~GeV, covering the full EIC energy range without additional hardware; d) the electron beam emittance can in principle be kept very small, since it is set at the injector and not blown up by synchrotron radiation in a ring. 
 
-The layout of this hybrid design is shown schematically in Fig.~\ref{fig:lhec-layout}: a 6~GeV SRF ERL linac is installed across a diameter of the existing RHIC/EIC tunnel, with recirculation arcs using conventional (non-FFA) magnets routed around the outside of the ion ring. The electron beam is delivered to the interaction region, shared with the ePIC detector, and the spent beam is dumped after energy recovery.
+%\begin{itemize}
+%    \item The electron beam power is reduced by roughly an order of magnitude, since each electron bunch is used only once rather than stored for millions of turns.
+%    \item The absence of a large electron storage ring substantially reduces civil construction and magnet costs.
+%    \item A 6~GeV SRF linac traversed three times reaches 18~GeV, covering the full EIC energy range without additional hardware.
+%    \item The electron beam emittance can in principle be kept very small, since it is set at the injector and not blown up by synchrotron radiation in a ring.
+%\end{itemize}
+
+The layout of this hybrid design is shown schematically in Fig.~\ref{fig:lhec-layout}: a 6~GeV SRF ERL linac is installed in a new tunnel in the South-West half\footnote{Avoiding interference with Peconic River protected watershed boundary.} of the inner area of the existing RHIC/EIC tunnel, with recirculation arcs using conventional (non-FFA) magnets routed through new arc tunnels. The electron beam is delivered to the interaction region, providing collisions for the ePIC detector, and the spent beam is dumped after energy recovery.
 
 \begin{figure}[!htb]
    \centering
    \includegraphics*[width=\columnwidth]{rhic-to-eic-lhec-layout2c}
    \caption{Schematic layout of the EIC built as an LHeC-like hybrid with energy recovery. 
-   A 6~GeV SC RF ERL linac (blue rectangle) is installed across the RHIC/EIC ion ring. 
-   Electrons reach 10--18~GeV via two or three recirculation passes. 
-   The ePIC detector is retained at the existing interaction point.}
+   %A 6~GeV SC RF ERL linac (blue rectangle) is installed across the RHIC/EIC ion ring. 
+   %Electrons reach 10--18~GeV via two or three recirculation passes. 
+   %The ePIC detector is retained at the existing interaction point.
+   }
    \label{fig:lhec-layout}
 \end{figure}
 
-The mini-project proceeds through the following design steps, each of which was carried out with AI assistance and is described in subsequent sections of this paper:
 
-\begin{enumerate}
-    \item Parametric modeling of beam parameters, luminosity, and beam-beam effects for the baseline EIC, the reference LHeC design, and the proposed hybrid (\textit{EIC-LHeC parameters} section).
-    \item Evaluation of beam-beam effects and electron disruption at the interaction point (\textit{Beam-beam evaluations} section).
-    \item Conceptual IR optics design and estimation of final-doublet aperture requirements (\textit{IR optics evaluations} section).
-    \item Assessment of IR magnet technology, including the choice between \NoCaseChange{Nb}--\NoCaseChange{Ti} and \NoCaseChange{Nb$_3$Sn} superconducting options (\textit{IR magnets evaluations} section).
-    \item Feasibility analysis of energy recovery at high current and with a disrupted electron beam (\textit{Energy recovery evaluations} section).
-    \item Design of the recirculation arc optics and transition sections (\textit{Recirculation evaluations} section).
-    \item Parametric cost estimation of the electron complex, interaction region, and detector, benchmarked against the LHeC cost study~\cite{LHeC-costs}, and converted to USA DOE accounting (\textit{Cost estimations} sections).
-    \item Identification of the critical R\&D items and open questions (\textit{Required R\&D and next steps} section).
-\end{enumerate}
+The mini-project can proceeds through the following design steps, each of which was carried out with AI assistance and is described in subsequent sections of this paper: parametric modeling of beam parameters for the baseline EIC, the reference LHeC design, and the proposed EIC-LHeC hybrid; evaluation of beam-beam effects and electron disruption at the interaction point; conceptual IR optics and IR magnets technology evaluation; analysis of energy recovery and recirculation; parametric cost estimation; and identification of the critical R\&D items and open questions. 
 
-Throughout all these steps, AI tools -- primarily large language models with code generation capability -- were used to write Python scripts, interpret results, explore parameter trade-offs, and draft text. The role of the ``students'' (in this rehearsal, the authors) was to formulate physically meaningful prompts, critically verify the outputs against known accelerator physics principles, and iteratively refine both the prompts and the results. This workflow is described in detail in the \textit{Verification of AI results} section.
+%\begin{enumerate}
+%    \item Parametric modeling of beam parameters, luminosity, and beam-beam effects for the baseline EIC, the reference LHeC design, and the proposed hybrid (\textit{EIC-LHeC parameters} section).
+%    \item Evaluation of beam-beam effects and electron disruption at the interaction point (\textit{Beam-beam evaluations} section).
+%    \item Conceptual IR optics design and estimation of final-doublet aperture requirements (\textit{IR optics evaluations} section).
+%    \item Assessment of IR magnet technology, including the choice between \NoCaseChange{Nb}--\NoCaseChange{Ti} and \NoCaseChange{Nb$_3$Sn} superconducting options (\textit{IR magnets evaluations} section).
+%    \item Feasibility analysis of energy recovery at high current and with a disrupted electron beam (\textit{Energy recovery evaluations} section).
+%    \item Design of the recirculation arc optics and transition sections (\textit{Recirculation evaluations} section).
+%    \item Parametric cost estimation of the electron complex, interaction region, and detector, benchmarked against the LHeC cost study~\cite{LHeC-costs}, and converted to USA DOE accounting (\textit{Cost estimations} sections).
+%    \item Identification of the critical R\&D items and open questions (\textit{Required R\&D and next steps} section).
+%\end{enumerate}
 
-\section{EIC-LHeC Parameters}
-
-\subsection{Approach and AI Prompting Strategy}
-
-The parameter development for the EIC-LHeC hybrid followed an iterative dialogue 
-with AI tools, beginning from the two parent designs and converging on a 
-self-consistent hybrid configuration. The starting prompt sequence was designed 
-to be accessible to a student with basic accelerator physics knowledge, 
-progressively building up from simple luminosity calculations to beam-beam 
-constraints and cost-driven optimization.
-
-The initial prompts requested Python codes to compute beam parameters and 
-luminosity for the standard EIC and LHeC designs separately, using published 
-parameter tables~\cite{EIC-pars,ESPP-LHeC-submission} as numerical inputs. 
-The AI was asked to use normalized emittances, compute geometric emittances via 
-the relativistic $\gamma$ factor, calculate beam sizes at the interaction point 
-(IP), and output a formatted parameter table. Beam-beam tune shift parameters 
-$\xi_{x,y}$ and RMS beam divergences at the IP were added in subsequent prompts
+Throughout all these steps, AI tools -- primarily large language models (Grok and Claude) with code generation capability -- were used to write Python scripts, interpret results, explore parameter trade-offs, and draft notes. The role of the ``students'' (in this rehearsal, the authors) was to formulate physically meaningful prompts, critically verify the outputs against known accelerator physics principles, and iteratively refine both the prompts and the results. 
 
 \section{EIC-LHeC Parameters}
 
@@ -142,12 +127,49 @@ constraints and cost-driven optimization.
 
 The initial prompts requested Python codes to compute beam parameters and 
 luminosity for the standard EIC and LHeC designs separately, using published 
-parameter tables~\cite{EIC-pars,ESPP-LHeC-submission} as numerical inputs. 
-The AI was asked to use normalized emittances, compute geometric emittances via 
-the relativistic $\gamma$ factor, calculate beam sizes at the interaction point 
-(IP), and output a formatted parameter table. Beam-beam tune shift parameters 
+parameter tables~\cite{EIC-pars,ESPP-LHeC} as numerical inputs. 
+The AI was asked to use input beam parameters, and calculate beam sizes at the interaction point 
+(IP), luminosity, and output a formatted parameter table. Beam-beam tune shift parameters 
 $\xi_{x,y}$ and RMS beam divergences at the IP were added in subsequent prompts, 
-as these quantities constrain the design and must be monitored during optimization.
+as these quantities constrain the design and must be monitored during optimization. Details of prompts, outputs, and generated python codes are available at \cite{GitHub}.
+
+\subsection{Baseline EIC and LHeC Reference Parameters}
+
+Table~\ref{tab:lhec-eic} shows abridged parameter sets for the 
+two parent designs, retaining the quantities most relevant for luminosity and 
+beam-beam evaluation. Full parameter tables are available in the 
+references~\cite{EIC-pars,ESPP-LHeC}.
+
+
+\begin{table}[!hbt]
+\centering
+\caption{Abridged LHeC Reference Parameters (Phase-1,
+         20~GeV $e$ on 7~TeV $p$) and Baseline EIC (1$\times$10$^{34}$ Peak Luminosity,
+         10~GeV $e$ on 275~GeV $p$) Parameters}
+\label{tab:lhec-eic}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Parameter} & \textbf{EIC} & \textbf{LHeC} \\
+\midrule
+e / p energy, GeV                    & 10 / 275  & 20 / 7000 \\
+$\sqrt{s}$ , GeV                     & 105           & 749   \\
+Number of bunches                    & 1160          & 2808   \\
+Collision frequency, Hz              & $9.1\times10^{7}$ & $3.2\times10^{7}$ \\
+$e$ bunch population                 & $1.72\times10^{11}$ & $1.19\times10^{10}$ \\
+$p$ bunch population                 & $6.9\times10^{10}$  & $2.2\times10^{11}$ \\
+$e$ norm. emitt. h/v, \textmu m   & 391 / 26  & 22 / 22 \\
+$p$ norm. emitt. h/v  \textmu m   & 3.3 / 0.3     & 2.5 / 2.5 \\
+$e$ $\beta^*_{x/y}$ at IP, m         & 0.45 / 0.06   & 0.2 / 0.2 \\
+$p$ $\beta^*_{x/y}$ at IP, m         & 0.80 / 0.07   & 0.35 / 0.35 \\
+$e$ $\sigma_{x/y}$ at IP, \textmu m  & 94.8 / 8.6    & 10.6 / 10.6 \\
+$p$ $\sigma_{x/y}$ at IP, \textmu m  & 94.9 / 8.6    & 10.7 / 10.7 \\
+$e$ / $p$ beam current, mA           & 1555 / 1000   & 60.1 / 1110 \\
+$p$ beam-beam $\xi_{x/y}$            & 0.012 / 0.012 & 0.001 / 0.001 \\
+Peak lumi. $\mathcal{L}$, cm$^{-2}$s$^{-1}$        & $1.05\times10^{34}$ & $5.78\times10^{33}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 \subsection{Resolving Parameter Inconsistencies in the Hybrid}
 
@@ -196,84 +218,81 @@ at collision energy; and (ii)~reduction of the vertical electron emittance
 using a magnetized electron gun followed by Derbenev's flat-beam transformer, 
 conservatively assumed to reduce $\varepsilon_{n,y}^e$ by a factor of ten.
 
-\subsection{Baseline EIC and LHeC Reference Parameters}
 
-Tables~\ref{tab:eic} and~\ref{tab:lhec} show abridged parameter sets for the 
-two parent designs, retaining the quantities most relevant for luminosity and 
-beam-beam evaluation. Full parameter tables are available in the 
-references~\cite{EIC-pars,ESPP-LHeC-submission}.
 
-\begin{table}[!hbt]
-\centering
-\caption{Abridged Baseline EIC Parameters (1$\times$10$^{34}$ Peak Luminosity,
-         10~GeV $e$ on 275~GeV $p$)}
-\label{tab:eic}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
-\midrule
-Electron / proton energy             & 10.0 / 275.0  & GeV \\
-$\sqrt{s}$                           & 105           & GeV \\
-Number of bunches                    & 1160          &     \\
-Collision frequency                  & $9.1\times10^{7}$ & Hz \\
-$e$ bunch population                 & $1.72\times10^{11}$ & \\
-$p$ bunch population                 & $6.9\times10^{10}$  & \\
-$e$ norm. emittance h/v              & 391.0 / 26.0  & \textmu m \\
-$p$ norm. emittance h/v              & 3.3 / 0.3     & \textmu m \\
-$e$ $\beta^*_{x/y}$ at IP            & 0.45 / 0.06   & m \\
-$p$ $\beta^*_{x/y}$ at IP            & 0.80 / 0.07   & m \\
-$e$ $\sigma_{x/y}$ at IP             & 94.8 / 8.6    & \textmu m \\
-$p$ $\sigma_{x/y}$ at IP             & 94.9 / 8.6    & \textmu m \\
-$e$ / $p$ beam current               & 1555 / 1000   & mA \\
-$p$ beam-beam $\xi_{x/y}$            & 0.012 / 0.012 & \\
-Peak luminosity $\mathcal{L}$        & $1.05\times10^{34}$ & cm$^{-2}$s$^{-1}$ \\
-\bottomrule
-\end{tabular}
-\end{table}
 
-\begin{table}[!hbt]
-\centering
-\caption{Abridged LHeC Reference Parameters (Phase-1,
-         20~GeV $e$ on 7~TeV $p$)}
-\label{tab:lhec}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
-\midrule
-Electron / proton energy             & 20.0 / 7000.0 & GeV \\
-$\sqrt{s}$                           & 749           & GeV \\
-Number of bunches                    & 2808          &     \\
-Collision frequency                  & $3.2\times10^{7}$ & Hz \\
-$e$ bunch population                 & $1.19\times10^{10}$ & \\
-$p$ bunch population                 & $2.2\times10^{11}$  & \\
-$e$ norm. emittance h/v              & 22.0 / 22.0   & \textmu m \\
-$p$ norm. emittance h/v              & 2.5 / 2.5     & \textmu m \\
-$e$ $\beta^*_{x/y}$ at IP            & 0.20 / 0.20   & m \\
-$p$ $\beta^*_{x/y}$ at IP            & 0.35 / 0.35   & m \\
-$e$ $\sigma_{x/y}$ at IP             & 10.6 / 10.6   & \textmu m \\
-$p$ $\sigma_{x/y}$ at IP             & 10.7 / 10.7   & \textmu m \\
-$e$ / $p$ beam current               & 60.1 / 1110   & mA \\
-$p$ beam-beam $\xi_{x/y}$            & 0.001 / 0.001 & \\
-Peak luminosity $\mathcal{L}$        & $5.78\times10^{33}$ & cm$^{-2}$s$^{-1}$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+%\begin{table}[!hbt]
+%\centering
+%\caption{Abridged Baseline EIC Parameters (1$\times$10$^{34}$ Peak Luminosity,
+%         10~GeV $e$ on 275~GeV $p$)}
+%\label{tab:eic}
+%\begin{tabular}{lcc}
+%\toprule
+%\textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+%\midrule
+%Electron / proton energy             & 10.0 / 275.0  & GeV \\
+%$\sqrt{s}$                           & 105           & GeV \\
+%Number of bunches                    & 1160          &     \\
+%Collision frequency                  & $9.1\times10^{7}$ & Hz \\
+%$e$ bunch population                 & $1.72\times10^{11}$ & \\
+%$p$ bunch population                 & $6.9\times10^{10}$  & \\
+%$e$ norm. emittance h/v              & 391.0 / 26.0  & \textmu m \\
+%$p$ norm. emittance h/v              & 3.3 / 0.3     & \textmu m \\
+%$e$ $\beta^*_{x/y}$ at IP            & 0.45 / 0.06   & m \\
+%$p$ $\beta^*_{x/y}$ at IP            & 0.80 / 0.07   & m \\
+%$e$ $\sigma_{x/y}$ at IP             & 94.8 / 8.6    & \textmu m \\
+%$p$ $\sigma_{x/y}$ at IP             & 94.9 / 8.6    & \textmu m \\
+%$e$ / $p$ beam current               & 1555 / 1000   & mA \\
+%$p$ beam-beam $\xi_{x/y}$            & 0.012 / 0.012 & \\
+%Peak luminosity $\mathcal{L}$        & $1.05\times10^{34}$ & cm$^{-2}$s$^{-1}$ \\
+%\bottomrule
+%\end{tabular}
+%\end{table}
+
+%\begin{table}[!hbt]
+%\centering
+%\caption{Abridged LHeC Reference Parameters (Phase-1,
+%         20~GeV $e$ on 7~TeV $p$)}
+%\label{tab:lhec}
+%\begin{tabular}{lcc}
+%\toprule
+%\textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+%\midrule
+%Electron / proton energy             & 20.0 / 7000.0 & GeV \\
+%$\sqrt{s}$                           & 749           & GeV \\
+%Number of bunches                    & 2808          &     \\
+%Collision frequency                  & $3.2\times10^{7}$ & Hz \\
+%$e$ bunch population                 & $1.19\times10^{10}$ & \\
+%$p$ bunch population                 & $2.2\times10^{11}$  & \\
+%$e$ norm. emittance h/v              & 22.0 / 22.0   & \textmu m \\
+%$p$ norm. emittance h/v              & 2.5 / 2.5     & \textmu m \\
+%$e$ $\beta^*_{x/y}$ at IP            & 0.20 / 0.20   & m \\
+%$p$ $\beta^*_{x/y}$ at IP            & 0.35 / 0.35   & m \\
+%$e$ $\sigma_{x/y}$ at IP             & 10.6 / 10.6   & \textmu m \\
+%$p$ $\sigma_{x/y}$ at IP             & 10.7 / 10.7   & \textmu m \\
+%$e$ / $p$ beam current               & 60.1 / 1110   & mA \\
+%$p$ beam-beam $\xi_{x/y}$            & 0.001 / 0.001 & \\
+%Peak luminosity $\mathcal{L}$        & $5.78\times10^{33}$ & cm$^{-2}$s$^{-1}$ \\
+%\bottomrule
+%\end{tabular}
+%\end{table}
 
 \subsection{Hybrid EIC-LHeC Parameter Sets}
 
-Three hybrid parameter sets were developed, corresponding to: the initial 
+Two hybrid parameter sets were developed, corresponding to: the initial 
 hybrid at $\sim$$2\times10^{33}$~cm$^{-2}$s$^{-1}$ using unmodified EIC 
 proton emittances; and an optimized version at $10^{34}$~cm$^{-2}$s$^{-1}$ 
 enabled by proton emittance reduction through electron cooling and improved 
 electron flat-beam optics. Full parameter tables for both are given in 
-Tables~\ref{tab:hybrid2e33} and~\ref{tab:hybrid1e34}. In both cases the ring 
-circumference is 3834~m, the revolution frequency 78230~Hz, the electron energy 
-10~GeV, and the proton energy 275~GeV ($\sqrt{s} \approx 105$~GeV).
+Tables~\ref{tab:hybrid2e33} and~\ref{tab:hybrid1e34}. Both cases 
+are presented for $\sqrt{s} \approx 105$~GeV (
+electron energy 
+10~GeV, and the proton energy 275~GeV). 
 
 \begin{table}[!hbt]
 \centering
 \caption{Hybrid EIC-LHeC Parameters, Initial Configuration
-         ($\sim$$2\times10^{33}$~cm$^{-2}$s$^{-1}$)}
+         (Luminosity $\sim$$2\times10^{33}$~cm$^{-2}$s$^{-1}$)}
 \label{tab:hybrid2e33}
 \begin{tabular}{lccc}
 \toprule
@@ -286,7 +305,7 @@ $N$                 & $1.19{\times}10^{10}$
 $n_{bunches}                    & \multicolumn{2}{c}{386}          &    \\
 $f_{collis}$                  & \multicolumn{2}{c}{$3.0\times10^{7}$} & Hz \\
 Norm. $\varepsilon$ h/v      & 22.0 / 22.0  & 3.3 / 0.3   & \textmu m \\
-Geom. $\varepsilon$ h/v                  & 1.1 / 1.1    & 11.3 / 1.0  & nm \\
+%Geom. $\varepsilon$ h/v                  & 1.1 / 1.1    & 11.3 / 1.0  & nm \\
 $\beta^*_{x/y}$ at IP                & 1.20 / 0.05  & 0.12 / 0.06 & m \\
 $\sigma_{z}$                   & 3.0   & 70.0  & mm \\
 $\sigma_{x/y}$ at IP                 & 36.7 / 7.5   & 36.8 / 7.8  & \textmu m \\
@@ -295,7 +314,7 @@ $\xi_{x/y}$                & 3.474 / 0.679 & 0.001 / 0.002 & \\
 $I_{beam}$                         & 57.6  & 1000  & mA \\
 \midrule
 $\sigma_{x/y}^{eff}$ at IP  & \multicolumn{2}{c}{52.0 / 10.8} & \textmu m \\
-Peak $\mathcal{L}$        & \multicolumn{2}{c}{$2.10\times10^{33}$} 
+Peak $\mathcal{L}$        & \multicolumn{2}{c}{$2.1\times10^{33}$} 
                                      & cm$^{-2}$s$^{-1}$ \\
 \bottomrule
 \end{tabular}
@@ -305,29 +324,29 @@ Peak $\mathcal{L}$        & \multicolumn{2}{c}{$2.10\times10^{33}$}
 \centering
 \caption{Hybrid EIC-LHeC Parameters, Optimized Configuration
          ($1\times10^{34}$~cm$^{-2}$s$^{-1}$, with $e$-cooling and
-         flat-beam optics)}
+         flat-beam optics). Omitted parameters are the same as in Table~\ref{tab:hybrid2e33}.}
 \label{tab:hybrid1e34}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Parameter} & \textbf{$e$} & \textbf{$p$} & \textbf{Unit} \\
 \midrule
-$E$                          & 10.0  & 275.0 & GeV \\
+%$E$                          & 10.0  & 275.0 & GeV \\
 %Relativistic $\gamma$                & 19569 & 293   &     \\
-$N$                 & $1.19{\times}10^{10}$ 
-                                     & $2.07{\times}10^{11}$ & \\
-$n_{bunches}$                    & \multicolumn{2}{c}{386}           &    \\
-$f_{collis}$                  & \multicolumn{2}{c}{$3.02\times10^{7}$} & Hz \\
+%$N$                 & $1.19{\times}10^{10}$ 
+%                                     & $2.07{\times}10^{11}$ & \\
+%$n_{bunches}$                    & \multicolumn{2}{c}{386}        %   &    \\
+%$f_{collis}$                  & \multicolumn{2}{c}{$3.02\times10^{7}$} & Hz \\
 Norm. $\varepsilon$ h/v                  & 22.0 / 2.2   & 0.9 / 0.1   & \textmu m \\
-Geom. $\varepsilon$ h/v                  & 1.1 / 0.1    & 3.1 / 0.3   & nm \\
+%Geom. $\varepsilon$ h/v                  & 1.1 / 0.1    & 3.1 / 0.3   & nm \\
 $\beta^*_{x/y}$ at IP                & 0.25 / 0.10  & 0.09 / 0.05 & m \\
-$\sigma_{z}$                   & 3.0   & 70.0  & mm \\
+%$\sigma_{z}$                   & 3.0   & 70.0  & mm \\
 $\sigma_{x/y}$ at IP                 & 16.8 / 3.4   & 16.8 / 3.6  & \textmu m \\
 $\sigma'_{x/y}$ at IP                & 66.8 / 32.7  & 182.4 / 77.8 & \textmu rad \\
 $\xi_{x/y}$                & 3.474 / 6.789 & 0.003 / 0.007 & \\
-$I_{beam}$                          & 58.0  & 1000  & mA \\
+%$I_{beam}$                          & 58.0  & 1000  & mA \\
 \midrule
 $\sigma_{x/y}^{eff}$ at IP  & \multicolumn{2}{c}{23.8 / 5.0} & \textmu m \\
-Peak $\mathcal{L}$        & \multicolumn{2}{c}{$1.00\times10^{34}$} 
+Peak $\mathcal{L}$        & \multicolumn{2}{c}{$1.0\times10^{34}$} 
                                      & cm$^{-2}$s$^{-1}$ \\
 \bottomrule
 \end{tabular}
@@ -353,35 +372,19 @@ focusing doublet, which are examined in the \textit{IR optics evaluations} secti
 
 \section{Beam-beam evaluations}
 
-Describe process and prompts for generation of beam-beam code and how it can be used for this case. 
+Beam-beam collisions, highly asymmetrical for EIC hybrid, can be evaluated using existing codes, but can be also studied using vibe-coding generated code. A simplified 2D beam-beam code was written by Claude AI in a few minutes from a paragraph-long prompt -- see the python code at \cite{GitHub} and beam-beam simulation illustration in Fig.~\ref{fig:beam-beam}. 
 
-Text 
-
-Text 
-
-Include picture of beam-beam collision 
-
-Text 
-
-Text 
-
-(NOTE ON PAPER LENGTH: THIS IS INVITED POSTER, SO THE LIMIT IS 5 PAGES. REFERENCES CAN BE ON EXTRA PAGE.)
- 
-
-DRAFT FOR BEAM-BEAM SECTION
-
-The animation below demonstrates what's now possible: using Claude Code AI, we created a simulation of electron-positron beam collisions in just minutes, from a paragraph-long prompt. You can explore the full example at https://lnkd.in/ep2pxya8
+\begin{figure}[!htb]
+   \centering
+   \includegraphics*[width=\columnwidth]{beam_beam_collision}
+   \caption{Example of beam-beam collision calculated by the code produced via vibe-coding. Arbitrary units in axes. 
+   }
+   \label{fig:beam-beam}
+\end{figure}
 
 This capability suggests a transformative shift in how students learn. Rather than passively attending lectures or running decades-old legacy codes, students could actively create simplified simulation codes, then iteratively refine them through AI-assisted modifications to explore different physics phenomena.
-For instance, with the beam-beam collision example, students could progressively enhance their understanding by:
 
-Converting to physical units
-
-Implementing realistic beam distributions with emittance and beta-functions
-
-Adding luminosity calculations
-
-Investigating how luminosity depends on disruption parameters and beam offsets
+For the specific example of EIC-LHeC hybrid mini-project, students could progressively enhance their understanding by first converting the code to use of physical units; then implementing realistic beam distributions with emittance and beta-functions; adjusting input parameters to match those of EIC-LHeC hybrid; adding luminosity calculations; investigating how luminosity depends on asymmetry of disruption parameters and beam offsets; measuring angular distribution of highly disrupted electron beam. 
 
 \section{IR optics evaluations}
 
@@ -481,6 +484,8 @@ Text
 
 \section{Initial Cost Estimations}
 
+SHORTEN SECTION
+
 \subsection{Approach and Scope}
 
 The cost estimation for the hybrid EIC-LHeC electron complex was developed 
@@ -575,6 +580,8 @@ the preferred configuration and is adopted as the reference for the DOE cost
 accounting in the following section.
 
 \subsection{USA DOE Cost Accounting}
+
+SHORTEN SECTION
 
 The recirculating configuration cost was converted to USA DOE accounting 
 conventions, as detailed in Table~\ref{tab:cost-doe}. The conversion applies: 
@@ -762,13 +769,15 @@ Presentation of LHeC project at ESPP 2025, questions and answers:
 \bibitem{EIC-pars} 
 A sample of EIC project parameters. 
 \url{https://eic.jlab.org/Documents/EIC-General/20250305-EIC_ParameterList.pdf}
-\bibitem{ESPP-LHeC-submission} 
+\bibitem{ESPP-LHeC} 
 Phase-One LHeC submission to ESPP
 \url{https://indico.cern.ch/event/1439855/contributions/6461558/attachments/3045931/5381880/backup.pdf}
-\bibitem{vibe-coding-sources}
-See GitHub \url{https://github.com/aseryi/vibe-coding/tree/main/EIC-LHeC}
+\bibitem{GitHub}
+For EIC-LHeC vibe-coding prompts and codes, see \url{https://github.com/aseryi/vibe-coding/}, sub-folders EIC-LHeC and beam-beam
 \bibitem{LHeC-costs} 
 Bruning O., 2018 LHeC cost estimate report, CERN Geneva  \url{https://cds.cern.ch/record/2652349/files/CERN-ACC-2018-0061.pdf}
+\bibitem{Genesis}
+Genesis -- A National Mission to Accelerate Science Through Artificial Intelligence, \url{https://genesis.energy.gov/}
 \end{thebibliography}
 
 %\printbibliography
