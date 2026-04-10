@@ -300,53 +300,102 @@ This capability suggests a transformative shift in how students learn. Rather th
 
 For the specific example of EIC-LHeC hybrid mini-project, students could progressively enhance their understanding by first converting the code to use of physical units; then implementing realistic beam distributions with emittance and beta-functions; adjusting input parameters to match those of EIC-LHeC hybrid; adding luminosity calculations; investigating how luminosity depends on asymmetry of disruption parameters and beam offsets; measuring angular distribution of highly disrupted electron beam. 
 
-\section{IR optics evaluations}
+\section{IR Optics and Magnets}                                                
+   
+  \textbf{Approach and AI prompting strategy.}                                   
+  The IR optics design focused on the Final Doublet (FD), the pair of
+  quadrupoles that converts the diverging beam emerging from the IP into         
+  a parallel beam downstream.                               
+  The prompt specified: use thick-lens transfer matrices; trace four rays        
+  with zero position at the IP and initial angles equal to  
+  $\pm\sigma'_{x,y}$ from Table~\ref{tab:hybrid2e33}; assume                     
+  $L^{*}=2$~m (IP to entrance of Q1), quadrupole length $L_q=2$~m, and           
+  inter-quadrupole gap 0.5~m; solve for the quadrupole strengths such that       
+  the beam exits the FD as a parallel beam in both planes simultaneously         
+  (condition $M_{22}=0$ in the full transfer matrix); try both QF--QD and
+  QD--QF polarities and select the one that minimises the maximum beam           
+  size inside the FD; plot X and Y beam envelopes and save the figures to
+  PNG files.                                                                     
+  Claude generated working Python code in a single pass, requiring no
+  manual debugging~\cite{GitHub}.                                                
+                                                                                 
+  \textbf{FD design results.}
+  For the proton beam ($E=275$~GeV, $\sigma'_x=306$~\textmu rad,                 
+  $\sigma'_y=131$~\textmu rad) the solver selects QF--QD polarity with           
+  $k_1=+0.319$~m$^{-2}$ and $k_2=-0.167$~m$^{-2}$, corresponding to              
+  physical gradients $G_1=293$~T/m and $G_2=153$~T/m at magnetic rigidity        
+  $B\rho=917$~T$\cdot$m.                                                         
+  The maximum beam envelope inside the FD reaches 0.82~mm (horizontal)           
+  and 1.43~mm (vertical).                                                        
+  For the electron beam ($E=10$~GeV, $\sigma'_x=31$~\textmu rad,                 
+  $\sigma'_y=150$~\textmu rad) the complementary QD--QF polarity is
+  optimal, giving $G_1=10.6$~T/m and $G_2=5.6$~T/m                               
+  ($B\rho=33.4$~T$\cdot$m), with maximum envelope sizes of 0.34~mm and
+  0.40~mm.                                                                       
+  Beam envelopes for the proton and electron FD are shown in                                  
+  Fig.~\ref{fig:fd-combined}.                                                      
+                    \begin{figure}[!htb]
+   \centering
+   \includegraphics*[width=\columnwidth]{FD_combined}
+   \caption{Hybrid EIC-LHeC FD produced via vibe-coding. 
+   }
+   \label{fig:fd-combined}
+\end{figure}        
 
-Describe process and prompts for generation of IR optics, beam envelopes, estimation of the collimation depth. 
+  \textbf{Magnet technology assessment.}                                         
+  For a quadrupole of gradient $G$, the maximum achievable aperture radius
+  for a given superconducting (SC) technology with peak bore field               
+  $B_\mathrm{bore}$ is $R_\mathrm{max}=B_\mathrm{bore}/G$.                       
+  The aperture-to-beam-size ratios                                               
+  $N_X = R_\mathrm{max}/\sigma^\mathrm{max}_x$ and                               
+  $N_Y = R_\mathrm{max}/\sigma^\mathrm{max}_y$                                   
+  quantify the available margin; in collider IR practice    
+  $N_{X,Y}\gtrsim10$ is required to accommodate orbit offsets, beam halo,        
+  and tolerances.                                                                
+  Table~\ref{tab:fd-magnets} lists these ratios for Q1, the most                 
+  constrained quadrupole, in each FD.                                            
+  For the proton Q1, the gradient of 293~T/m mandates SC technology              
+  (normal-conducting quadrupoles are typically limited to                        
+  $\lesssim\!100$~T/m).                                                          
+  All three SC options yield $N_Y>10$; Nb$_3$Sn at 4.2~K provides the
+  largest margin ($N_Y=28.6$) and is therefore the preferred technology          
+  for the proton FD.                                        
+  For the electron FD, the required gradients are so low (10.6 and               
+  5.6~T/m) that SC magnets are unnecessary; even room-temperature                
+  normal-conducting quadrupoles would be fully adequate.
+                                                                                 
+  \begin{table}[!hbt]                                       
+  \centering                                                                     
+  \caption{Aperture-to-beam-size ratios $N_{X,Y}$ for Q1 (most
+    constrained quadrupole) in the proton and electron Final Doublets.           
+    $R_\mathrm{max}=B_\mathrm{bore}/G$;
+    $N_{X,Y}=R_\mathrm{max}/\sigma^\mathrm{max}_{x,y}$.}                         
+  \label{tab:fd-magnets}                                    
+  \begin{tabular}{lcccc}                                                         
+  \toprule                                                                       
+  \textbf{Technology} & $B_\mathrm{bore}$ & $R_\mathrm{max}$ & $N_X$ & $N_Y$ \\
+                      & [T]               & [mm]             &       &       \\  
+  \midrule                                                                       
+  \multicolumn{5}{l}{\textit{p-Q1 (QF),\;                                   
+    $G=293$~T/m;\;                                                               
+    $\sigma^\mathrm{max}_{x/y}=0.82/1.43$~mm                      
+    }} \\                                         
+  \quad NbTi, 1.9~K      &  8.5 & 29.0 & 35.5 & 20.3 \\                          
+  \quad NbTi, 4.2~K      &  7.0 & 23.9 & 29.2 & 16.7 \\                          
+  \quad Nb$_3$Sn, 4.2~K  & 12.0 & 41.0 & 50.1 & 28.6 \\                          
+  \midrule                                                                       
+  \multicolumn{5}{l}{\textit{e-Q1 (QD),\;                                 
+    $G=10.6$~T/m;\;                                                              
+    $\sigma^\mathrm{max}_{x/y}=0.34/0.40$~mm                      
+    }} \\                                         
+  \quad NbTi, 1.9~K      &  8.5 &  799 & 2378 & 1997 \\
+  \quad NbTi, 4.2~K      &  7.0 &  658 & 1958 & 1645 \\                          
+  \quad Nb$_3$Sn, 4.2~K  & 12.0 & 1128 & 3357 & 2820 \\                          
+  \bottomrule                                                                    
+  \end{tabular}                                                                  
+  \end{table}         
 
-Text 
-
-Text 
-
-Include picture of IR optics
-
-Text 
-
-Text 
-
-Text 
-
-
-Text 
-
-Text 
-
-(NOTE ON PAPER LENGTH: THIS IS INVITED POSTER, SO THE LIMIT IS 5 PAGES. REFERENCES CAN BE ON EXTRA PAGE.)
- 
-
-
-\section{IR magnets evaluations}
-
-Describe process and prompts for evaluation of parameters and technological options for IR magnets, which will be determined need to be SC magnets, including discussion of Nb or Nb3Sn choices
-
-Text 
-
-Text 
-
-Text 
-
-Text 
-
-Text 
-
-
-Text 
-
-Text 
-
-(NOTE ON PAPER LENGTH: THIS IS INVITED POSTER, SO THE LIMIT IS 5 PAGES. REFERENCES CAN BE ON EXTRA PAGE.)
- 
-
+Further steps, within the students' EIC-LHeC mini-project, can include varying $L^*$ and other FD parameters, as well as evaluating the aperture-to-beam-size ratio for the electron beam disrupted after IP collision. 
 
 \section{Energy Recovery evaluations}
 
@@ -362,6 +411,7 @@ Text
 
 Text 
 
+Text
 
 Text 
 
@@ -508,6 +558,8 @@ Text
 
 Text 
 
+Text
+
 Text 
 
 
@@ -559,8 +611,7 @@ Text
 Text 
 
 Text 
-
-Text 
+ 
  
 
 
