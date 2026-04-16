@@ -12,7 +12,7 @@
                refpage       % references placed on separate page
                %biblatex,     % BibLaTeX is to be used
                %nospread,     % flushend option: do not fill with whitespace to balance columns
-               %hyphens,      % allow \url to hyphenate at "-" (hyphens)
+               hyphens,      % allow \url to hyphenate at "-" (hyphens)
                %luatex,       % use LuaLaTeX to process the file
                ]{jacow}
 
@@ -20,9 +20,12 @@
 
 % Inserted this longtable package,
 % but it seems too wide for IPAC template}
-\usepackage{longtable}
+%\usepackage{longtable}
+
 
 %\addbibresource{jacow_latex_template_bib.bib}
+
+%\renewcommand{\UrlBreaks}{\do\/\do\-\do\_\do\.\do\?\do\=\do\&\do\~\do\#}
 
 \listfiles
 
@@ -37,7 +40,7 @@
 %%%%% Title - Author block generated from indico contribution details %%%%%
 %%%%%%%%%%%%%%%%%%%% Do not modify  %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% If you need to modify the content of this block, do it by modifying the  %%%%%
-\title{ACCELERATOR DESIGN EDUCATIONAL PRIMER – CONCEPTUALIZING AND OPTIMIZING THE HYBRID LHEC-LIKE ELECTRON-ION COLLIDER DESIGN\thanks{Parameters of the presented concepts were developed with assistance from Grok AI and Claude AI.}}
+\title{ACCELERATOR DESIGN EDUCATIONAL PRIMER – CONCEPTUALIZING AND OPTIMIZING THE HYBRID LHEC-LIKE ELECTRON-ION COLLIDER DESIGN\thanks{Parameters of the presented concepts were developed with assistance from Grok AI, Claude AI and Gemini AI.}}
 
 \author{A.~Seryi\thanks{aseryi@odu.edu}, L.~van Riesen-Haupt, Old Dominion University,  
 A.~Formenti, A.~Huebl, R.~Lehe, \\
@@ -138,6 +141,7 @@ prompts, outputs, and generated codes are available at~\cite{GitHub}.
 Table~\ref{tab:lhec-eic} shows abridged parameter sets for the two parent 
 designs; full tables are in~\cite{EIC-pars,ESPP-LHeC}.
 
+% CHECK: LHeC rep rate 40 MHz and why initial Grok code gave it 32 MHz value?
 
 \begin{table}[!hbt]
 \centering
@@ -152,7 +156,8 @@ designs; full tables are in~\cite{EIC-pars,ESPP-LHeC}.
 e / p energy, GeV                    & 10 / 275  & 20 / 7000 \\
 $\sqrt{s}$ , GeV                     & 105           & 749   \\
 Number of bunches                    & 1160          & 2808   \\
-Collision frequency, Hz              & $9.1\times10^{7}$ & $3.2\times10^{7}$ \\
+Collision frequency, Hz              & $9.1\times10^{7}$ & $4.0\times10^{7}$ \\
+%Collision frequency, Hz              & $9.1\times10^{7}$ & $3.2\times10^{7}$ \\
 $e$ bunch population                 & $1.72\times10^{11}$ & $1.19\times10^{10}$ \\
 $p$ bunch population                 & $6.9\times10^{10}$  & $2.2\times10^{11}$ \\
 $e$ norm. emitt. h/v, \textmu m   & 391 / 26  & 22 / 22 \\
@@ -175,7 +180,7 @@ When asked to combine EIC proton parameters with LHeC electron parameters,
 the AI correctly identified three fundamental conflicts before producing any 
 code. (i)~\textit{Bunch rate mismatch:} the EIC ring (3834~m circumference, 
 1160 bunches) gives a collision frequency of $\sim$91~MHz, while the LHeC 
-electron linac assumes $\sim$32~MHz; naively combining the two implies 
+electron linac assumes $\sim$40~MHz; naively combining the two implies 
 $\sim$1.45~A electron current, far beyond the 60~mA LHeC design value. 
 (ii)~\textit{Beam size mismatch:} LHeC electron optics 
 ($\beta^*_{x,y}=0.20$~m, $\varepsilon_n=22$~\textmu m) were optimized for 
@@ -317,23 +322,33 @@ For the specific example of EIC-LHeC hybrid mini-project, students could progres
   size inside the FD; plot X and Y beam envelopes and save the figures to
   PNG files.                                                                     
   Claude generated working Python code in a single pass, requiring no
-  manual debugging~\cite{GitHub}.                                                
+  manual debugging~\cite{GitHub}, and independently reproduced by Gemini.                                                
                                                                                  
   \textbf{FD design results.}
-  For the proton beam ($E=275$~GeV, $\sigma'_x=306$~\textmu rad,                 
-  $\sigma'_y=131$~\textmu rad) the solver selects QF--QD polarity with           
+For the beam with IP parameters from 
+Table~\ref{tab:hybrid2e33}, for the proton beam  
+the solver selects QF--QD polarity with           
   $k_1=+0.319$~m$^{-2}$ and $k_2=-0.167$~m$^{-2}$, corresponding to              
-  physical gradients $G_1=293$~T/m and $G_2=153$~T/m at magnetic rigidity        
-  $B\rho=917$~T$\cdot$m.                                                         
-  The maximum beam envelope inside the FD reaches 0.82~mm (horizontal)           
-  and 1.43~mm (vertical).                                                        
-  For the electron beam ($E=10$~GeV, $\sigma'_x=31$~\textmu rad,                 
-  $\sigma'_y=150$~\textmu rad) the complementary QD--QF polarity is
-  optimal, giving $G_1=10.6$~T/m and $G_2=5.6$~T/m                               
-  ($B\rho=33.4$~T$\cdot$m), with maximum envelope sizes of 0.34~mm and
-  0.40~mm.                                                                       
-  Beam envelopes for the proton and electron FD are shown in                                  
-  Fig.~\ref{fig:fd-combined}.                                                      
+  physical gradients $G_1=293$~T/m and $G_2=153$~T/m (for $B\rho=917$~T$\cdot$m). 
+For the electron beam the complementary QD--QF polarity is
+  optimal, giving $G_1=10.6$~T/m and $G_2=5.6$~T/m (at $B\rho=33.4$~T$\cdot$m). 
+  The maximum beam envelope inside the FD (shown in      
+  Fig.~\ref{fig:fd-combined}) reaches 0.82~mm and 1.43~mm (horizontal and vertical) for protons; and 0.34~mm and 0.40~mm for electrons.            
+  
+%  For the proton beam ($E=275$~GeV, $\sigma'_x=306$~\textmu rad,                 
+%  $\sigma'_y=131$~\textmu rad) the solver selects QF--QD polarity with           
+%  $k_1=+0.319$~m$^{-2}$ and $k_2=-0.167$~m$^{-2}$, corresponding to              
+%  physical gradients $G_1=293$~T/m and $G_2=153$~T/m at magnetic rigidity        
+%  $B\rho=917$~T$\cdot$m.                                                         
+%  The maximum beam envelope inside the FD reaches 0.82~mm (horizontal)           
+%  and 1.43~mm (vertical).                                                        
+%  For the electron beam ($E=10$~GeV, $\sigma'_x=31$~\textmu rad,                 
+%  $\sigma'_y=150$~\textmu rad) the complementary QD--QF polarity is
+%  optimal, giving $G_1=10.6$~T/m and $G_2=5.6$~T/m                               
+%  ($B\rho=33.4$~T$\cdot$m), with maximum envelope sizes of 0.34~mm and
+%  0.40~mm.                                                                       
+%  Beam envelopes for the proton and electron FD are shown in                                  
+%  Fig.~\ref{fig:fd-combined}.                                                      
                     \begin{figure}[!htb]
    \centering
    \includegraphics*[width=\columnwidth]{FD_combined}
@@ -342,108 +357,105 @@ For the specific example of EIC-LHeC hybrid mini-project, students could progres
    \label{fig:fd-combined}
 \end{figure}        
 
-  \textbf{Magnet technology assessment.}                                         
-  For a quadrupole of gradient $G$, the maximum achievable aperture radius
+\begin{figure}[!htb]
+   \centering
+   \includegraphics*[width=\columnwidth]{FD-technology-IPAC}
+   \caption{Hybrid EIC-LHeC FD stay-clear vs $L^*$ and SC magnet technology analyzed via vibe-coding. 
+   }
+   \label{fig:fd-technology}
+\end{figure}        
+
+
+  \textbf{Magnet technology assessment.}     
+For a quadrupole of gradient $G$, the maximum achievable aperture radius
   for a given superconducting (SC) technology with peak bore field               
   $B_\mathrm{bore}$ is $R_\mathrm{max}=B_\mathrm{bore}/G$.                       
   The aperture-to-beam-size ratios                                               
   $N_X = R_\mathrm{max}/\sigma^\mathrm{max}_x$ and                               
   $N_Y = R_\mathrm{max}/\sigma^\mathrm{max}_y$                                   
   quantify the available margin; in collider IR practice    
-  $N_{X,Y}\gtrsim10$ is required to accommodate orbit offsets, beam halo,        
-  and tolerances.                                                                
-  Table~\ref{tab:fd-magnets} lists these ratios for Q1, the most                 
-  constrained quadrupole, in each FD.                                            
-  For the proton Q1, the gradient of 293~T/m mandates SC technology              
-  (normal-conducting quadrupoles are typically limited to                        
-  $\lesssim\!100$~T/m).                                                          
-  All three SC options yield $N_Y>10$; Nb$_3$Sn at 4.2~K provides the
-  largest margin ($N_Y=28.6$) and is therefore the preferred technology          
-  for the proton FD.                                        
-  For the electron FD, the required gradients are so low (10.6 and               
-  5.6~T/m) that SC magnets are unnecessary; even room-temperature                
-  normal-conducting quadrupoles would be fully adequate.
+  $N_{X,Y}\gtrsim15$ is required to accommodate orbit offsets, beam halo,        
+  and tolerances.  
+Assuming that magnet technologies, NbTi at 4.2~K, NbTi at 1.9~K, and Nb$_3$Sn at 4.2~K, allow peak bore field of 7 T, 8.5 T and 12 T correspondingly, the EIC-LHeC hybrid proton FD (the most constrained) was analyzed with Gemini AI, varying the $L^*$ parameter. The resulting beam stay clear is shown in Fig.~\ref{fig:fd-technology}, indicating the preference for NbTi at 1.9~K.     
+  For the electron FD, the required gradients are so low that SC magnets are in principe unnecessary; however SC approach may be required for practical purposes of integration within tightly constrained FD. 
+  
+%  Table~\ref{tab:fd-magnets} lists these ratios for Q1, the most                 
+%  constrained quadrupole, in each FD.                                            
+%  For the proton Q1, the gradient of 293~T/m mandates SC technology              
+%  (normal-conducting quadrupoles are typically limited to                        
+%  $\lesssim\!100$~T/m).                                                          
+%  All three SC options yield $N_Y>10$; Nb$_3$Sn at 4.2~K provides the
+%  largest margin ($N_Y=28.6$) and is therefore the preferred technology          
+%  for the proton FD.                                        
+%  For the electron FD, the required gradients are so low (10.6 and               
+%  5.6~T/m) that SC magnets are unnecessary; even room-temperature                
+%  normal-conducting quadrupoles would be fully adequate.
                                                                                  
-  \begin{table}[!hbt]                                       
-  \centering                                                                     
-  \caption{Aperture-to-beam-size ratios $N_{X,Y}$ for Q1 (most
-    constrained quadrupole) in the proton and electron Final Doublets.           
-    $R_\mathrm{max}=B_\mathrm{bore}/G$;
-    $N_{X,Y}=R_\mathrm{max}/\sigma^\mathrm{max}_{x,y}$.}                         
-  \label{tab:fd-magnets}                                    
-  \begin{tabular}{lcccc}                                                         
-  \toprule                                                                       
-  \textbf{Technology} & $B_\mathrm{bore}$ & $R_\mathrm{max}$ & $N_X$ & $N_Y$ \\
-                      & [T]               & [mm]             &       &       \\  
-  \midrule                                                                       
-  \multicolumn{5}{l}{\textit{p-Q1 (QF),\;                                   
-    $G=293$~T/m;\;                                                               
-    $\sigma^\mathrm{max}_{x/y}=0.82/1.43$~mm                      
-    }} \\                                         
-  \quad NbTi, 1.9~K      &  8.5 & 29.0 & 35.5 & 20.3 \\                          
-  \quad NbTi, 4.2~K      &  7.0 & 23.9 & 29.2 & 16.7 \\                          
-  \quad Nb$_3$Sn, 4.2~K  & 12.0 & 41.0 & 50.1 & 28.6 \\                          
-  \midrule                                                                       
-  \multicolumn{5}{l}{\textit{e-Q1 (QD),\;                                 
-    $G=10.6$~T/m;\;                                                              
-    $\sigma^\mathrm{max}_{x/y}=0.34/0.40$~mm                      
-    }} \\                                         
-  \quad NbTi, 1.9~K      &  8.5 &  799 & 2378 & 1997 \\
-  \quad NbTi, 4.2~K      &  7.0 &  658 & 1958 & 1645 \\                          
-  \quad Nb$_3$Sn, 4.2~K  & 12.0 & 1128 & 3357 & 2820 \\                          
-  \bottomrule                                                                    
-  \end{tabular}                                                                  
-  \end{table}         
+%  \begin{table}[!hbt]                                       
+%  \centering                                                                     
+%  \caption{Aperture-to-beam-size ratios $N_{X,Y}$ for Q1 (most
+%    constrained quadrupole) in the proton and electron Final Doublets.           
+%    $R_\mathrm{max}=B_\mathrm{bore}/G$;
+%    $N_{X,Y}=R_\mathrm{max}/\sigma^\mathrm{max}_{x,y}$.}                         
+%  \label{tab:fd-magnets}                                    
+%  \begin{tabular}{lcccc}                                                         
+%  \toprule                                                                       
+%  \textbf{Technology} & $B_\mathrm{bore}$ & $R_\mathrm{max}$ & $N_X$ & $N_Y$ \\
+%                      & [T]               & [mm]             &       &       \\  
+%  \midrule                                                                       
+%  \multicolumn{5}{l}{\textit{p-Q1 (QF),\;                                   
+%    $G=293$~T/m;\;                                                               
+%    $\sigma^\mathrm{max}_{x/y}=0.82/1.43$~mm                      
+%    }} \\                                         
+%  \quad NbTi, 1.9~K      &  8.5 & 29.0 & 35.5 & 20.3 \\                          
+%  \quad NbTi, 4.2~K      &  7.0 & 23.9 & 29.2 & 16.7 \\                          
+%  \quad Nb$_3$Sn, 4.2~K  & 12.0 & 41.0 & 50.1 & 28.6 \\                          
+%  \midrule                                                                       
+%  \multicolumn{5}{l}{\textit{e-Q1 (QD),\;                                 
+%    $G=10.6$~T/m;\;                                                              
+%    $\sigma^\mathrm{max}_{x/y}=0.34/0.40$~mm                      
+%    }} \\                                         
+%  \quad NbTi, 1.9~K      &  8.5 &  799 & 2378 & 1997 \\
+%  \quad NbTi, 4.2~K      &  7.0 &  658 & 1958 & 1645 \\                          
+%  \quad Nb$_3$Sn, 4.2~K  & 12.0 & 1128 & 3357 & 2820 \\                          
+%  \bottomrule                                                                    
+%  \end{tabular}                                                                  
+%  \end{table}         
 
-Further steps, within the students' EIC-LHeC mini-project, can include varying $L^*$ and other FD parameters, as well as evaluating the aperture-to-beam-size ratio for the electron beam disrupted after IP collision. 
+%Further steps, within the students' EIC-LHeC mini-project, can include varying $L^*$ and other FD parameters, as well as evaluating the aperture-to-beam-size ratio for the electron beam disrupted after IP collision. 
 
-\section{Energy Recovery evaluations}
-
-Describe process and prompts for evaluation of the energy recovery
-
-Text 
-
-Text 
-
-Text 
-
-Text 
-
-Text 
-
-Text
-
-Text 
-
-Text 
-
-(NOTE ON PAPER LENGTH: THIS IS INVITED POSTER, SO THE LIMIT IS 5 PAGES. REFERENCES CAN BE ON EXTRA PAGE.)
- 
+Further steps, within the students' EIC-LHeC mini-project, can include varying FD quadrupole lengths and other FD parameters, as well as evaluating the aperture-to-beam-size ratio for the electron beam disrupted after IP collision. 
 
 
+\section{Energy Recovery Evaluations}                                      
+                                                                             
+  \textbf{Approach and AI prompting strategy.}                               
+  A detailed prompt was given to Claude specifying all relevant beam         
+  parameters                                                                 
+  for the EIC-LHeC hybrid: 1.5~nC bunch charge, 1.5~mm bunch length,
+  7~MeV injection energy, 10~GeV SRF linac gain, 801.58~MHz RF               
+  frequency, and 40.08~MHz bunch repetition rate, yielding 60~mA in the      
+  arcs and 120~mA in the linac (accelerating plus decelerating bunches).     
+  The prompt requested a comprehensive simulation of a single-pass ERL       
+  and a two-pass ERL (5~GeV per pass), including: longitudinal               
+  phase-space tracking through acceleration, an electron-proton              
+  beam-beam collision, 180-degree phase reversal in the return arc,          
+  and deceleration; energy recovery efficiency as a function of              
+  deceleration-phase error; a detailed wall-plug power budget; and           
+  comparison with a conventional storage ring.     
 
-\section{Recirculation evaluations}
-
-Describe process and prompts for evaluation of recirculation
-
-Text 
-
-Text 
-
-Text 
-
-Text 
-
-Text 
-
-
-Text 
-
-Text 
-
-(NOTE ON PAPER LENGTH: THIS IS INVITED POSTER, SO THE LIMIT IS 5 PAGES. REFERENCES CAN BE ON EXTRA PAGE.)
- 
-
+   \begin{figure}[!htb]                                                       
+     \centering                                                              
+     \includegraphics*[width=\columnwidth]{ERL_power_pie}            
+     \caption{Single-pass ERL wall-plug power budget breakdown produced by vibe-coding with Claude.}      
+     \label{fig:erl-power}                                                   
+  \end{figure}       
+                                                                             
+  \textbf{Energy recovery results.}     
+  The AI model produced a code at the first iteration, reach with physics, including Yokoya-Chen beam-beam approximation, SR losses, comparison of single or two pass ERL with rings of difference size -- offering wast opportunities for discussion with students about validity and applicability of approaches.  The simulation confirms an energy recovery efficiency of 99.93\%,          
+  reducing the wall-plug power from 602~MW (no recovery) to 7.0~MW. Figure~\ref{fig:erl-power} shows the single-pass power budget              
+  breakdown. 
+                                                                              
 
 
 \section{Initial Cost Estimations}
@@ -494,19 +506,17 @@ Contingency (60\%)                       & 541.6 \\
 
 Describe process and prompts for advanced evaluation of the cost of EIC-LHeC accelerator
 
-Will be written by Carl Andreas Lindstrøm later in April 
+Will be written by Carl Andreas Lindstrøm around end of April 
 
 This will be based on the cost modelling described both in the ESSPU HALHF backup document (\url{https://arxiv.org/pdf/2503.23489}) as well as an IPAC 2025 paper (\url{https://arxiv.org/pdf/2505.21654}). It will also reference the code via the following link to the first, more crude cost optimization code (\url{https://github.com/carlandreaslindstrom/ColliderCostModel}); and to the up-to-date cost optimization code used in ABEL (\url{https://github.com/abel-framework/ABEL/blob/main/abel/classes/cost_modeled.py}).
 
 Text 
+ 
 
 Text 
 
 Text 
 
-Text 
-
-(NOTE ON PAPER LENGTH: THIS IS INVITED POSTER, SO THE LIMIT IS 5 PAGES. REFERENCES CAN BE ON EXTRA PAGE.)
  
 \section{Required R\&D and Next Steps}
 
@@ -581,7 +591,6 @@ Text
 
 Text 
 
-(NOTE ON PAPER LENGTH: THIS IS INVITED POSTER, SO THE LIMIT IS 5 PAGES. REFERENCES CAN BE ON EXTRA PAGE.)
  
 
 \section{Self-assessment and next steps}
@@ -594,30 +603,34 @@ Text
 
 Text 
 
+Text
+
 Text 
+
+This section replaces Conclusion section
 
 (NOTE ON PAPER LENGTH: THIS IS INVITED POSTER, SO THE LIMIT IS 5 PAGES. REFERENCES CAN BE ON EXTRA PAGE.)
  
 
 
-\section{Conclusion}
+%\section{Conclusion}
 
-Write conclusion
+%Write conclusion
 
-Text 
+%Text 
 
-Text 
+%Text 
 
-Text 
+%Text 
 
-Text 
+%Text 
  
  
 
 
 \begin{thebibliography}{99}
 \bibitem{Genesis}
-Genesis -- A National Mission to Accelerate Science Through Artificial Intelligence, \url{https://genesis.energy.gov/}
+Genesis -- A National Mission to Accelerate Science Through Artificial Intelligence, \href{https://genesis.energy.gov/}{\nolinkurl{https://genesis.energy.gov/}}
 \bibitem{USPAS2016}
 Compact Ring-Based X-Ray Source with on-Orbit and on-Energy Laser-Plasma Injection, TUA3CO03, NAPAC-2016, 
 USPAS 2016 mini-project.
@@ -625,20 +638,22 @@ USPAS 2016 mini-project.
 EUV FEL Light Source Based On Energy Recovery Linac With On-Orbit Laser Plasma Injection, MOPG66, IPAC 2024, 
 USPAS 2023 mini-project.
 \bibitem{ESPP}
-The European Strategy for Particle Physics (ESPP) Open Symposium, July 2025 \url{https://agenda.infn.it/event/44943/}
+The European Strategy for Particle Physics (ESPP) Open Symposium, July 2025 \href{https://agenda.infn.it/event/44943/}{\nolinkurl{https://agenda.infn.it/event/44943}}
 \bibitem{ESPP-LHeC-QnA} 
 Presentation of LHeC project at ESPP 2025, questions and answers: 
-\url{https://youtu.be/NX1eYfol5JI?list=PLbsqUzxZlcP5p4izedCWb7EOP-ZkSH495&t=2703}
+\href{https://youtu.be/NX1eYfol5JI?list=PLbsqUzxZlcP5p4izedCWb7EOP-ZkSH495&t=2703}{\nolinkurl{https://youtu.be/NX1eYfol5JI?list=PLbsqUzxZlcP5p4izedCWb7EOP-ZkSH495&t=2703}}
 \bibitem{EIC-pars} 
-A sample of EIC project parameters. 
-\url{https://eic.jlab.org/Documents/EIC-General/20250305-EIC_ParameterList.pdf}
+Electron Ion Collider Parameter List
+Summary, 
+Editors: S. Peggs, T. Satogata, April 4, 2026,  
+\href{https://eic.jlab.org/Documents/EIC-General/EIC_ParameterList.pdf}{\nolinkurl{https://eic.jlab.org/Documents/EIC-General/EIC_ParameterList.pdf}}
 \bibitem{ESPP-LHeC} 
-Phase-One LHeC submission to ESPP
-\url{https://indico.cern.ch/event/1439855/contributions/6461558/attachments/3045931/5381880/backup.pdf}
+Phase-One LHeC submission to ESPP 2026 strategy update, Krzysztof Piotrzkowski, et al., 
+\href{https://indico.cern.ch/event/1439855/contributions/6461558/}{\nolinkurl{https://indico.cern.ch/event/1439855/contributions/6461558/}}
 \bibitem{GitHub}
-For EIC-LHeC vibe-coding prompts and codes, see \url{https://github.com/aseryi/vibe-coding/}, sub-folders EIC-LHeC and beam-beam
+For EIC-LHeC vibe-coding prompts and codes, see \href{https://github.com/aseryi/vibe-coding/}{\nolinkurl{https://github.com/aseryi/vibe-coding/}}, sub-folders EIC-LHeC and beam-beam
 \bibitem{LHeC-costs} 
-Bruning O., 2018 LHeC cost estimate report, CERN Geneva  \url{https://cds.cern.ch/record/2652349/files/CERN-ACC-2018-0061.pdf}
+LHeC Cost Estimate, CERN-ACC-2018-0061, Oliver Bruning, 2018, \href{https://cds.cern.ch/record/2652349/}{\nolinkurl{https://cds.cern.ch/record/2652349/}}
 \end{thebibliography}
 
 %\printbibliography
