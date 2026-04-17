@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERL Simulation – Assumptions and Model Choices</title>
+<style>
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 0 30px;
+    color: #1a1a1a;
+    background: #fafafa;
+  }
+  h1 { font-size: 1.7em; color: #1a3a5c; border-bottom: 3px solid #1a3a5c; padding-bottom: 8px; }
+  h2 { font-size: 1.2em; color: #1a3a5c; margin-top: 2.0em;
+       border-left: 5px solid #1a3a5c; padding-left: 10px; background: #eef4fb; }
+  h3 { font-size: 1.05em; color: #2c5f8a; margin-top: 1.4em; }
+  table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 18px 0;
+    font-size: 0.93em;
+  }
+  th {
+    background: #1a3a5c; color: white; padding: 7px 10px;
+    text-align: left; font-weight: normal;
+  }
+  td { padding: 6px 10px; vertical-align: top; border-bottom: 1px solid #d5e3f0; }
+  tr:nth-child(even) td { background: #f0f6fc; }
+  td.param  { font-family: "Courier New", monospace; white-space: nowrap; color: #1a3a5c; }
+  td.value  { font-family: "Courier New", monospace; white-space: nowrap; }
+  td.assum  { color: #444; }
+  td.ref    { font-size: 0.88em; color: #555; }
+  .tag-given    { background:#d4edda; color:#155724; border-radius:3px;
+                  padding:1px 5px; font-size:0.82em; white-space:nowrap; }
+  .tag-assumed  { background:#fff3cd; color:#856404; border-radius:3px;
+                  padding:1px 5px; font-size:0.82em; white-space:nowrap; }
+  .tag-derived  { background:#cce5ff; color:#004085; border-radius:3px;
+                  padding:1px 5px; font-size:0.82em; white-space:nowrap; }
+  .tag-model    { background:#f8d7da; color:#721c24; border-radius:3px;
+                  padding:1px 5px; font-size:0.82em; white-space:nowrap; }
+  .note {
+    background: #fffbea; border-left: 4px solid #f0c040;
+    padding: 8px 14px; margin: 10px 0; font-size: 0.93em;
+  }
+  .warn {
+    background: #fdecea; border-left: 4px solid #d32f2f;
+    padding: 8px 14px; margin: 10px 0; font-size: 0.93em;
+  }
+  .question {
+    background: #f3f0ff; border-left: 4px solid #7c4dff;
+    padding: 8px 14px; margin: 10px 0; font-size: 0.93em;
+  }
+  code { font-family: "Courier New", monospace; background:#eee; padding:1px 4px;
+         border-radius:3px; font-size:0.92em; }
+  .ref-list { font-size: 0.9em; }
+  .ref-list li { margin-bottom: 6px; }
+  a { color: #1a5276; }
+  .legend { font-size: 0.88em; margin: 6px 0 16px 0; }
+  .legend span { margin-right: 14px; }
+  footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid #ccc;
+           font-size: 0.85em; color: #777; }
+</style>
+</head>
+<body>
+
+<h1>ERL Simulation &mdash; Model Assumptions &amp; Discussion Guide</h1>
+<p>
+  <strong>File:</strong> <code>erl_simulation.py</code> &nbsp;|&nbsp;
+  <strong>Repository:</strong> <a href="https://github.com/aseryi/vibe-coding">github.com/aseryi/vibe-coding</a>
+  (EIC-LHeC folder)<br>
+  <strong>Purpose:</strong> Educational simulation of single-pass and two-pass Energy
+  Recovery Linacs (ERLs) for electron&ndash;proton collisions at EIC-like parameters.<br>
+  <strong>Audience:</strong> Graduate students and early-career accelerator physicists.
+</p>
+
+<div class="legend">
+  <strong>Legend:</strong>
+  <span><span class="tag-given">GIVEN</span> specified in the original prompt</span>
+  <span><span class="tag-assumed">ASSUMED</span> chosen by the author / AI; could be varied</span>
+  <span><span class="tag-derived">DERIVED</span> follows from other quantities by formula</span>
+  <span><span class="tag-model">MODEL</span> a deliberate simplification of the physics</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>1. Electron Beam Parameters</h2>
+
+<table>
+<tr><th>Parameter</th><th>Value</th><th>Status</th><th>Assumption / Justification</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">Q_bunch</td>
+  <td class="value">1.5 nC</td>
+  <td><span class="tag-given">GIVEN</span></td>
+  <td class="assum">Specified in the prompt. Representative of high-current ERL designs (e.g.
+      Cornell ERL, eRHIC). Sets the average current together with the repetition rate.</td>
+  <td class="ref">[1, 2]</td>
+</tr>
+<tr>
+  <td class="param">sigma_z</td>
+  <td class="value">1.5 mm (rms)</td>
+  <td><span class="tag-given">GIVEN</span></td>
+  <td class="assum">Specified in the prompt. Short bunches are needed for high luminosity
+      (hourglass factor) and to limit coherent SR in arcs. Achievable with velocity
+      bunching or a magnetic chicane compressor at low energy.</td>
+  <td class="ref">[1, 3]</td>
+</tr>
+<tr>
+  <td class="param">E_inj</td>
+  <td class="value">7 MeV</td>
+  <td><span class="tag-given">GIVEN</span></td>
+  <td class="assum">Typical photoinjector output energy: high enough for the beam to be
+      fully relativistic (&gamma;&nbsp;&approx;&nbsp;14) and for space-charge forces to be
+      manageable, yet low enough to limit the dump power P&nbsp;=&nbsp;I&middot;E_inj.</td>
+  <td class="ref">[4, 5]</td>
+</tr>
+<tr>
+  <td class="param">delta_in_rms</td>
+  <td class="value">4&times;10<sup>&minus;3</sup></td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Initial fractional energy spread at injection. Typical for a
+      DC photogun followed by a bunching section and booster cavity.
+      <strong>Discussion:</strong> What happens to the final dump energy spread
+      if this is 10&times; larger? Smaller?</td>
+  <td class="ref">[4]</td>
+</tr>
+<tr>
+  <td class="param">N_e</td>
+  <td class="value">9.36&times;10<sup>9</sup></td>
+  <td><span class="tag-derived">DERIVED</span></td>
+  <td class="assum">N_e = Q / e. No loss is assumed between injection and the IP
+      (100% transmission). In reality 1&ndash;5% beam loss budgets are typical.</td>
+  <td class="ref">&mdash;</td>
+</tr>
+<tr>
+  <td class="param">eps_n_e (1-pass)</td>
+  <td class="value">20 &mu;m&middot;rad</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Normalised transverse emittance at the collision point.
+      Set by the photocathode quantum emittance and solenoid transport, not
+      by SR damping. Deliberately conservative; advanced guns achieve
+      &lt;1&nbsp;&mu;m&middot;rad at lower charge.</td>
+  <td class="ref">[4, 6]</td>
+</tr>
+<tr>
+  <td class="param">eps_n_e (2-pass)</td>
+  <td class="value">10 &mu;m&middot;rad</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Assigned a factor-of-two improvement for the two-pass case,
+      motivated by the longer acceleration path allowing better phase-space control.
+      This is speculative; both cases use the same injector.</td>
+  <td class="ref">&mdash;</td>
+</tr>
+</table>
+
+<div class="question">
+  <strong>Student exercise:</strong> The ERL emittance is gun-limited
+  (&sim;10&ndash;20&nbsp;&mu;m&middot;rad), while a 10&nbsp;GeV storage ring has SR equilibrium
+  emittance &sim;0.1&nbsp;&mu;m&middot;rad. Why does the ERL still achieve competitive or
+  higher luminosity? What compensates for the larger emittance?
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>2. RF and Timing Parameters</h2>
+
+<table>
+<tr><th>Parameter</th><th>Value</th><th>Status</th><th>Assumption / Justification</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">f_RF</td>
+  <td class="value">801.58 MHz</td>
+  <td><span class="tag-given">GIVEN</span></td>
+  <td class="assum">Specified in the prompt. Close to 800&nbsp;MHz, a common choice
+      for high-current ERLs (e.g. eRHIC design studies). Lower than 1.3&nbsp;GHz TESLA
+      cavities &mdash; better HOM damping at high current, larger bore radius.</td>
+  <td class="ref">[2, 7]</td>
+</tr>
+<tr>
+  <td class="param">f_rep</td>
+  <td class="value">40.08 MHz</td>
+  <td><span class="tag-given">GIVEN</span></td>
+  <td class="assum">Specified. Sets average current I = Q &times; f_rep = 60&nbsp;mA.
+      Chosen as 1/20 of f_RF, so every 20th RF bucket carries a bunch (harmonic = 20).
+      This sparse filling reduces HOM excitation.</td>
+  <td class="ref">[2]</td>
+</tr>
+<tr>
+  <td class="param">harmonic</td>
+  <td class="value">20</td>
+  <td><span class="tag-derived">DERIVED</span></td>
+  <td class="assum">h = f_RF / f_rep = 801.58 / 40.08 &approx; 20.00. Exact integer
+      implies synchronous timing between RF and bunch arrival &mdash; a necessary
+      operating condition.</td>
+  <td class="ref">&mdash;</td>
+</tr>
+<tr>
+  <td class="param">I_arc</td>
+  <td class="value">60 mA</td>
+  <td><span class="tag-derived">DERIVED</span></td>
+  <td class="assum">Current in the arcs (one-way beam). Each arc carries only the
+      accelerating <em>or</em> decelerating bunch train &mdash; not both.</td>
+  <td class="ref">&mdash;</td>
+</tr>
+<tr>
+  <td class="param">I_linac</td>
+  <td class="value">120 mA</td>
+  <td><span class="tag-derived">DERIVED</span></td>
+  <td class="assum">The SRF linac is traversed by both the accelerating and decelerating
+      bunch trains simultaneously. Their beam-loading currents are anti-phased and largely
+      cancel &mdash; the key energy-recovery mechanism. Any mismatch drives residual
+      generator power requirements.</td>
+  <td class="ref">[8]</td>
+</tr>
+<tr>
+  <td class="param">phi_acc</td>
+  <td class="value">0&deg; (crest)</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Maximum energy gain. In practice a small off-crest angle (&sim;5&deg;)
+      provides longitudinal focusing to prevent phase-space growth in multi-cell cavities.
+      The code does not model this correction.</td>
+  <td class="ref">[9]</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>3. SRF Linac Parameters</h2>
+
+<table>
+<tr><th>Parameter</th><th>Value</th><th>Status</th><th>Assumption / Justification</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">G_acc</td>
+  <td class="value">15 MV/m</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">State-of-the-art for production SRF cavities at 800&nbsp;MHz.
+      Current CEBAF cavities achieve 19&ndash;22&nbsp;MV/m; 15&nbsp;MV/m is a conservative,
+      reliable operating gradient leaving headroom for quench margin.
+      <strong>Discussion:</strong> Increasing to 20&nbsp;MV/m would reduce cavity
+      count by 25% and cryoplant power proportionally.</td>
+  <td class="ref">[9, 10]</td>
+</tr>
+<tr>
+  <td class="param">L_cell</td>
+  <td class="value">0.187 m</td>
+  <td><span class="tag-derived">DERIVED</span></td>
+  <td class="assum">L_cell = &lambda;/2 = c / (2 f_RF). Standard pillbox-cell
+      geometry for a &beta; = 1 cavity.</td>
+  <td class="ref">[9]</td>
+</tr>
+<tr>
+  <td class="param">N_cells_cav</td>
+  <td class="value">5</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Five-cell cavity, a common choice balancing HOM spectrum
+      (fewer modes than 7-cell) against cost per unit voltage.
+      CEBAF uses 5-cell; TESLA uses 9-cell at 1.3&nbsp;GHz.</td>
+  <td class="ref">[9, 11]</td>
+</tr>
+<tr>
+  <td class="param">V_cav</td>
+  <td class="value">&approx;14 MV</td>
+  <td><span class="tag-derived">DERIVED</span></td>
+  <td class="assum">V_cav = G &times; L_cav = 15&nbsp;MV/m &times; 0.935&nbsp;m.</td>
+  <td class="ref">&mdash;</td>
+</tr>
+<tr>
+  <td class="param">Q_0</td>
+  <td class="value">2&times;10<sup>10</sup></td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Intrinsic quality factor. Routinely achieved in modern Nb
+      cavities at 2&nbsp;K. Nb<sub>3</sub>Sn and Nb/Cu coatings are targeting
+      Q<sub>0</sub> &gt; 10<sup>11</sup> for future machines; that would reduce
+      cryoplant power by &gt;5&times;.</td>
+  <td class="ref">[9, 12]</td>
+</tr>
+<tr>
+  <td class="param">R/Q</td>
+  <td class="value">400 &Omega;</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Geometric shunt impedance per cavity (linac convention:
+      R/Q = V<sup>2</sup> / (&omega; U)). Estimated for a 5-cell 802&nbsp;MHz cavity
+      by scaling from CEBAF and TESLA designs. Determines dynamic heat load:
+      P<sub>2K</sub> = V<sup>2</sup> / (R/Q &middot; Q<sub>0</sub>).</td>
+  <td class="ref">[9, 10]</td>
+</tr>
+<tr>
+  <td class="param">eta_cryo</td>
+  <td class="value">250 W<sub>plug</sub>/W<sub>2K</sub></td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Cryoplant coefficient of performance (inverse). Carnot limit
+      at 2&nbsp;K is T<sub>hot</sub>/&Delta;T &approx; 150; realistic plants are
+      &sim;1.5&ndash;2&times; Carnot, giving 200&ndash;300&nbsp;W/W.
+      250&nbsp;W/W is a standard engineering estimate.</td>
+  <td class="ref">[13]</td>
+</tr>
+<tr>
+  <td class="param">eta_RFPA</td>
+  <td class="value">65%</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">RF power amplifier (klystron or IOT) wall-plug efficiency.
+      Modern klystrons reach 65&ndash;70%. Solid-state amplifiers can reach &gt;80%
+      but are not yet commercially available at the required power levels for SRF.</td>
+  <td class="ref">[13]</td>
+</tr>
+<tr>
+  <td class="param">eta_inj</td>
+  <td class="value">35%</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Injector wall-plug efficiency (DC gun + bunching + booster).
+      Normal-conducting guns are typically 30&ndash;40% efficient. This is the
+      dominant power cost in the ERL budget. Improving this (e.g. using a
+      superconducting gun) would directly reduce total wall-plug power.</td>
+  <td class="ref">[4, 5]</td>
+</tr>
+<tr>
+  <td class="param">static heat load</td>
+  <td class="value">neglected</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">The code includes only dynamic (RF-driven) heat load. Static
+      heat from thermal radiation, support conduction, and HOM deposited power
+      can add 20&ndash;50% to the cryogenic load in a real system.</td>
+  <td class="ref">[9]</td>
+</tr>
+</table>
+
+<div class="warn">
+  <strong>Key limitation:</strong> The cryoplant power (4.4&nbsp;MW for 1-pass ERL)
+  is the largest single budget item, driven by the assumed Q<sub>0</sub> and R/Q.
+  Students should examine how this scales: P<sub>cryo</sub> &prop; V<sup>2</sup>&nbsp;/&nbsp;(R/Q &middot; Q<sub>0</sub> &middot; &eta;<sub>cryo</sub>).
+  Doubling Q<sub>0</sub> halves the cryoplant cost.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>4. Longitudinal Dynamics Model</h2>
+
+<table>
+<tr><th>Assumption</th><th>Status</th><th>Details and Limitations</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">Thin-lens RF kick</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">Each accelerating pass is treated as a single instantaneous kick:
+      &Delta;E = eV<sub>0</sub>[cos(&phi;<sub>s</sub> + &phi;) &minus; cos(&phi;<sub>s</sub>)].
+      This is exact in the limit where the bunch is much shorter than the cavity length,
+      which holds here (&sigma;<sub>z</sub> = 1.5&nbsp;mm &ll; L<sub>cav</sub> = 935&nbsp;mm).
+      The full linac (hundreds of cavities) is collapsed into a single kick per pass.</td>
+  <td class="ref">[14, 15]</td>
+</tr>
+<tr>
+  <td class="param">No longitudinal focusing</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">A linac has no restoring force in the longitudinal plane (unlike a
+      storage ring where synchrotron oscillations confine the bunch). The RF phase is
+      fixed; particles with different phases receive different kicks but are not returned
+      to the reference phase. This is correct for a linac; the model therefore does not
+      include synchrotron oscillations.</td>
+  <td class="ref">[14]</td>
+</tr>
+<tr>
+  <td class="param">&beta; &approx; 1 throughout</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">Electrons are ultra-relativistic at all energies considered
+      (&gamma; &ge; 14 at 7&nbsp;MeV injection). Phase slippage between different-energy
+      particles is therefore negligible and is not modelled. This would break down
+      below &sim;2&nbsp;MeV.</td>
+  <td class="ref">[14]</td>
+</tr>
+<tr>
+  <td class="param">No wake fields / HOMs</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">Resistive-wall and cavity higher-order-mode (HOM) wake fields
+      can drive emittance growth and the beam-breakup (BBU) instability in ERLs.
+      These are entirely absent from the simulation. BBU is a critical design
+      constraint for high-current ERLs and is the subject of dedicated codes
+      (e.g. TDBBU, BMAD).</td>
+  <td class="ref">[16, 17]</td>
+</tr>
+<tr>
+  <td class="param">No space charge</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">Space-charge forces scale as 1/&gamma;<sup>2</sup> and are
+      negligible for &gamma; &gg; 1. They are important only at very low energy
+      (&lt; few MeV) near the cathode and gun exit, which is before injection
+      into the simulation.</td>
+  <td class="ref">[14]</td>
+</tr>
+<tr>
+  <td class="param">No coherent SR in arcs</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">Coherent synchrotron radiation (CSR) in the bending magnets of the
+      return arc can cause longitudinal emittance growth for short bunches. With
+      &sigma;<sub>z</sub>&nbsp;=&nbsp;1.5&nbsp;mm at 10&nbsp;GeV, CSR is moderate but
+      non-negligible. The arc SR power is included in the power budget (incoherent
+      average), but CSR-induced emittance growth is not tracked.</td>
+  <td class="ref">[18]</td>
+</tr>
+<tr>
+  <td class="param">Gaussian initial distribution</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">Both the longitudinal phase (&phi;) and energy deviation (&delta;E)
+      at injection are drawn from independent Gaussian distributions. Real photocathode
+      guns produce distributions closer to a truncated Gaussian with non-Gaussian tails.
+      Tails matter for halo formation and machine protection.</td>
+  <td class="ref">[4]</td>
+</tr>
+<tr>
+  <td class="param">50,000 macro-particles</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Sufficient to resolve the core of the distribution at the
+      10<sup>&minus;4</sup> level. The simulation is not attempting to track beam
+      halo (would need &gt;10<sup>6</sup> particles and importance sampling).</td>
+  <td class="ref">&mdash;</td>
+</tr>
+<tr>
+  <td class="param">Fixed random seed (42)</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Ensures reproducibility. With 50,000 particles statistical noise is
+      small (&lt;0.5% on rms quantities) and results are seed-independent.</td>
+  <td class="ref">&mdash;</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>5. Return Arc and 180&deg; Phase Reversal</h2>
+
+<table>
+<tr><th>Assumption</th><th>Status</th><th>Details and Limitations</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">Ideal phase flip</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">The return arc is assumed to impart <em>exactly</em> a 180&deg; phase
+      advance relative to the RF. In practice this is achieved by tuning the arc path length
+      (and hence its R<sub>56</sub>) so that the net phase at the linac entrance shifts by
+      (2n+1)&pi; for some integer n. Any deviation is the &ldquo;phase error&rdquo; studied
+      in Figure&nbsp;4.</td>
+  <td class="ref">[8, 19]</td>
+</tr>
+<tr>
+  <td class="param">Linear arc transport</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">The arc is modelled as a perfect phase shifter with no emittance
+      growth, chromatic aberrations, or dispersion mismatch. In a real design the arc
+      optics must be carefully matched to suppress second-order dispersion (T<sub>566</sub>)
+      which would smear the phase distribution of off-momentum particles.</td>
+  <td class="ref">[19]</td>
+</tr>
+<tr>
+  <td class="param">Single arc (1-pass) / two arcs (2-pass)</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">The single-pass ERL has one return arc from the IP back to the
+      linac entrance. The two-pass ERL has two arcs of different energies on each side
+      (acceleration and deceleration), for a total of four arc segments. Only the high-energy
+      arc SR is included in the power budget; lower-energy arcs contribute negligibly.</td>
+  <td class="ref">[1, 2]</td>
+</tr>
+<tr>
+  <td class="param">Correlated phase error</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">In the efficiency-vs-phase-error analysis (Fig.&nbsp;4), the same
+      phase error &Delta;&phi; is applied to every deceleration pass. In a two-pass ERL
+      this may be conservative (systematic error) or optimistic (if errors are independent
+      per pass).</td>
+  <td class="ref">&mdash;</td>
+</tr>
+<tr>
+  <td class="param">Rho_arc for SR</td>
+  <td class="value">300 m</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Bending radius used for the SR energy-loss calculation in the arc.
+      A larger radius reduces SR losses but increases arc length and cost. For EIC-scale
+      machines, radii of 100&ndash;300&nbsp;m are plausible.
+      <strong>Discussion:</strong> How does the SR arc power scale with energy and radius?
+      (P &prop; E<sup>4</sup> / &rho;).</td>
+  <td class="ref">[20]</td>
+</tr>
+<tr>
+  <td class="param">Arc SR fraction</td>
+  <td class="value">0.5 (half-turn)</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">SR energy loss is approximated as U<sub>0</sub>/2, treating the
+      return arc as sweeping half of a full ring. This is a rough geometric estimate;
+      the actual loss depends on the arc bending-magnet layout.</td>
+  <td class="ref">&mdash;</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>6. Energy Recovery Efficiency</h2>
+
+<table>
+<tr><th>Assumption</th><th>Status</th><th>Details and Limitations</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">Analytical formula &eta; = cos(&Delta;&phi;)</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">For a reference particle accelerated at the RF crest
+      (&phi;<sub>acc</sub>&nbsp;=&nbsp;0) and decelerated at &pi;&nbsp;+&nbsp;&Delta;&phi;:
+      E<sub>recovered</sub>&nbsp;=&nbsp;E<sub>gain</sub>&nbsp;&times;&nbsp;cos(&Delta;&phi;),
+      so &eta;&nbsp;=&nbsp;cos(&Delta;&phi;). This is exact for a mono-energetic beam; the
+      finite energy spread of the bunch broadens the effective efficiency curve slightly.</td>
+  <td class="ref">[8]</td>
+</tr>
+<tr>
+  <td class="param">100% beam transmission</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">All electrons that are accelerated are assumed to be decelerated
+      and reach the dump. Beam loss along the return path (halo, Touschek scattering,
+      gas scattering) would reduce the recovered power and deposit radioactivating energy
+      in the tunnel. Typical ERL loss budgets target &lt;1&nbsp;W total beam loss.</td>
+  <td class="ref">[1]</td>
+</tr>
+<tr>
+  <td class="param">Residual RF = 0.1% of beam power</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Generator RF power required to compensate imperfect beam-loading
+      cancellation between the accelerating and decelerating bunches. In an ideal ERL
+      these cancel exactly. The 0.1% residual is a rough engineering estimate; the actual
+      value depends on phase and amplitude stability of the RF control system (LLRF).</td>
+  <td class="ref">[8, 21]</td>
+</tr>
+</table>
+
+<div class="question">
+  <strong>Student exercise:</strong> The efficiency formula &eta;&nbsp;=&nbsp;cos(&Delta;&phi;)
+  is independent of the number of passes. Why? Sketch an argument. Would this change if
+  the phase error were different in each pass?
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>7. Proton Beam Parameters (EIC-like)</h2>
+
+<table>
+<tr><th>Parameter</th><th>Value</th><th>Status</th><th>Assumption / Justification</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">E_p</td>
+  <td class="value">275 GeV</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Maximum proton energy in the EIC Hadron Storage Ring (RHIC-derived).
+      Sets &radic;s &approx; 105&nbsp;GeV for 10&nbsp;GeV electrons.</td>
+  <td class="ref">[22]</td>
+</tr>
+<tr>
+  <td class="param">N_p</td>
+  <td class="value">6.88&times;10<sup>10</sup></td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">EIC design bunch population for 275&nbsp;GeV protons. This drives the
+      large beam-beam parameter &xi;<sub>e</sub>&nbsp;&sim;&nbsp;3.5 for the electron beam,
+      which would be catastrophic in a storage ring but is acceptable in a single-pass ERL
+      because there is no resonance accumulation.</td>
+  <td class="ref">[22]</td>
+</tr>
+<tr>
+  <td class="param">eps_n_p</td>
+  <td class="value">1 &mu;m&middot;rad</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">EIC design normalised proton emittance. Smaller than the electron
+      emittance in this simulation, so the proton beam is the narrower of the two at the IP.
+      Proton emittance can be reduced further by coherent electron cooling (CeC).</td>
+  <td class="ref">[22, 23]</td>
+</tr>
+<tr>
+  <td class="param">beta_star</td>
+  <td class="value">5 cm (round)</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Equal &beta;* in x and y, and equal for electrons and protons.
+      This gives the simplest round-beam IP geometry. Real EIC designs use flat beams
+      (&beta;*<sub>x</sub> &ne; &beta;*<sub>y</sub>) to optimise luminosity vs.
+      aperture constraints.</td>
+  <td class="ref">[22]</td>
+</tr>
+<tr>
+  <td class="param">f_rep_p = f_rep_e</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Both beams are assumed to have the same bunch repetition rate
+      (40.08&nbsp;MHz), ensuring every electron bunch collides with exactly one proton bunch.
+      In practice the proton ring circumference may not be an exact integer multiple
+      of the electron bunch spacing, requiring careful RF gymnastics.</td>
+  <td class="ref">[22]</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>8. Beam-Beam Interaction Model</h2>
+
+<table>
+<tr><th>Assumption</th><th>Status</th><th>Details and Limitations</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">Round-beam, strong-weak &xi;</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">The beam-beam tune-shift parameter is computed in the strong-weak
+      (test-particle) approximation for round beams:
+      &xi; = r<sub>e</sub>&middot;N<sub>opp</sub> / (4&pi;&middot;&gamma;&middot;&sigma;<sup>2</sup>).
+      The convolved beam size &sigma;<sub>coll</sub>&nbsp;=&nbsp;&radic;(&sigma;<sub>e</sub><sup>2</sup>&nbsp;+&nbsp;&sigma;<sub>p</sub><sup>2</sup>)
+      is used. The weak-strong approximation ignores the back-action on the strong
+      (proton) beam from the weaker (electron) beam.</td>
+  <td class="ref">[24, 25]</td>
+</tr>
+<tr>
+  <td class="param">&xi;<sub>e</sub> unconstrained in ERL</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">In a storage ring, &xi;&nbsp;&gt;&nbsp;0.05&ndash;0.10 drives
+      resonant emittance growth over many turns and is catastrophic. In a single-pass ERL,
+      each electron makes only <em>one collision</em>, so there is no turn-by-turn
+      resonance. Large &xi; is therefore tolerable up to the point where the beam is
+      geometrically disrupted. The relevant limit is then the disruption parameter D.</td>
+  <td class="ref">[24, 26]</td>
+</tr>
+<tr>
+  <td class="param">Hourglass factor</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">F<sub>hg</sub> &approx; 1/&radic;(1 + (&sigma;<sub>z</sub>/&beta;*)<sup>2</sup>).
+      This is an approximation to the exact Gaussian integral. With &sigma;<sub>z</sub>&nbsp;=&nbsp;1.5&nbsp;mm
+      and &beta;*&nbsp;=&nbsp;5&nbsp;cm, the correction is &lt;0.05% (F&nbsp;&approx;&nbsp;0.9996)
+      &mdash; negligible here. It would matter for &sigma;<sub>z</sub> &sim; &beta;*.</td>
+  <td class="ref">[27]</td>
+</tr>
+<tr>
+  <td class="param">Pinch enhancement</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">H<sub>pinch</sub>&nbsp;&approx;&nbsp;1&nbsp;+&nbsp;0.5&nbsp;D<sup>0.45</sup>
+      (empirical fit from Yokoya &amp; Chen). When D&nbsp;&gt;&nbsp;1 the opposing beam
+      focuses (&ldquo;pinches&rdquo;) the other beam during the collision, enhancing
+      instantaneous luminosity. The exponent 0.45 and coefficient 0.5 are fits to
+      simulation data and have significant uncertainty.</td>
+  <td class="ref">[24, 25]</td>
+</tr>
+<tr>
+  <td class="param">Beamstrahlung energy spread</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">The energy spread added to the electron beam by beamstrahlung
+      (synchrotron radiation in the proton field) is approximated as a Gaussian smearing
+      with width &delta;<sub>bs</sub>&nbsp;&approx;&nbsp;&xi;<sub>e</sub>&times;(&sigma;<sub>z</sub>/&beta;*)&times;E<sub>beam</sub>/2.
+      This is a very rough linear parametrisation. A full treatment requires the
+      Yokoya-Chen formalism integrated over the bunch longitudinal profile.</td>
+  <td class="ref">[24, 28]</td>
+</tr>
+<tr>
+  <td class="param">No crossing angle</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">Head-on collisions are assumed. A finite crossing angle (needed to
+      separate the beams after the IP) reduces the geometric luminosity by the Piwinski
+      factor F&nbsp;=&nbsp;1/&radic;(1&nbsp;+&nbsp;(&phi;&sigma;<sub>z</sub>/2&sigma;*)<sup>2</sup>)
+      and is not included.</td>
+  <td class="ref">[27]</td>
+</tr>
+<tr>
+  <td class="param">Luminosity formula</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">L&nbsp;=&nbsp;H&middot;N<sub>e</sub>&middot;N<sub>p</sub>&middot;f<sub>rep</sub>&nbsp;/&nbsp;(4&pi;&sigma;<sub>e</sub>&sigma;<sub>p</sub>).
+      This uses the product of individual beam sizes in the denominator rather than the
+      sum of squares. For an asymmetric collision the exact formula uses
+      (&sigma;<sub>e</sub><sup>2</sup>&nbsp;+&nbsp;&sigma;<sub>p</sub><sup>2</sup>); here
+      &sigma;<sub>e</sub>&sigma;<sub>p</sub>&nbsp;&ne;&nbsp;(&sigma;<sub>e</sub><sup>2</sup>+&sigma;<sub>p</sub><sup>2</sup>)
+      by a factor of order&nbsp;2 when beams have comparable sizes. Luminosity values are
+      therefore approximate to within a factor &sim;2.</td>
+  <td class="ref">[27]</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>9. Power Budget Assumptions</h2>
+
+<table>
+<tr><th>Assumption</th><th>Status</th><th>Details and Limitations</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">Dump energy = E_inj (ideal)</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">In the ideal ERL all accelerated energy is returned to the RF
+      and only the injection energy (7&nbsp;MeV) is lost at the dump.
+      P<sub>dump</sub>&nbsp;=&nbsp;I&times;E<sub>inj</sub>&nbsp;=&nbsp;421&nbsp;kW.
+      Any phase error or beam loss increases this.</td>
+  <td class="ref">[8]</td>
+</tr>
+<tr>
+  <td class="param">Beam loss = 0</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">All electrons reach the dump. Even 10&nbsp;W of lost beam at
+      10&nbsp;GeV activates materials significantly and is a hard engineering limit,
+      but the <em>power</em> impact on the budget is negligible at the 0.01% level.</td>
+  <td class="ref">[1]</td>
+</tr>
+<tr>
+  <td class="param">2-pass cryoplant &prop; V<sup>2</sup></td>
+  <td><span class="tag-derived">DERIVED</span></td>
+  <td class="assum">The two-pass ERL uses one linac at half the voltage (5&nbsp;GeV
+      instead of 10&nbsp;GeV). Dynamic SRF losses scale as V<sup>2</sup>, so the
+      cryoplant power is 4&times; smaller: a major advantage of multi-pass operation.</td>
+  <td class="ref">[9]</td>
+</tr>
+<tr>
+  <td class="param">Storage ring &tau;<sub>beam</sub> = 2 hr</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Beam lifetime used to estimate injector power for the storage ring
+      comparison. A 10&nbsp;GeV ring will be Touschek-lifetime-limited; 2&nbsp;hours
+      is plausible for moderate bunch intensity but depends strongly on the ring
+      optics (momentum aperture) and vacuum pressure.</td>
+  <td class="ref">[20]</td>
+</tr>
+<tr>
+  <td class="param">Ring magnet power &sim;1 kW/m</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Rough estimate for normal-conducting dipole magnets. For a compact
+      ring (C&nbsp;&sim;&nbsp;2&pi;&times;50&times;4&nbsp;&approx;&nbsp;1260&nbsp;m) this
+      gives &sim;1.3&nbsp;MW, but is a very coarse model. Superconducting arc magnets
+      would have negligible resistive loss.</td>
+  <td class="ref">&mdash;</td>
+</tr>
+<tr>
+  <td class="param">Ring RF efficiency &eta;_RF = 50%</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Wall-plug efficiency of the entire ring RF system (klystrons +
+      waveguides + cavities). Comparable to the ERL RFPA assumption (65%), reduced by
+      the additional normal-conducting cavity losses in a ring RF system.</td>
+  <td class="ref">[13]</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>10. Two-Pass ERL Specific Assumptions</h2>
+
+<table>
+<tr><th>Assumption</th><th>Status</th><th>Details and Limitations</th><th>Reference(s)</th></tr>
+<tr>
+  <td class="param">Same single linac, 4 passes</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">One SRF linac section is traversed four times per electron:
+      acceleration pass 1, acceleration pass 2, deceleration pass 1, deceleration pass 2.
+      At any instant the linac contains bunches at four different energies.
+      Net beam loading cancels between the two accelerating and two decelerating passes.
+      The linac cavity count is therefore half that of the 1-pass case (357 vs. 714).</td>
+  <td class="ref">[1, 26]</td>
+</tr>
+<tr>
+  <td class="param">Independent arc phases</td>
+  <td><span class="tag-model">MODEL</span></td>
+  <td class="assum">In a two-pass ERL each recirculation arc must deliver a distinct
+      phase advance to route the beam to the correct linac entrance. In practice a
+      spreader/recombiner magnet system separates beams of different energies at the
+      linac ends. This complexity is not modelled; only the energy and phase at each
+      linac traversal are tracked.</td>
+  <td class="ref">[1, 29]</td>
+</tr>
+<tr>
+  <td class="param">eps_n_e (2-pass) = 10 &mu;m&middot;rad</td>
+  <td><span class="tag-assumed">ASSUMED</span></td>
+  <td class="assum">Assigned 2&times; smaller than the 1-pass case. In reality both
+      start from the same gun, and any emittance improvement in the 2-pass case would
+      come from better phase-space manipulation, not from the recirculation itself.
+      This assumption is optimistic and should be treated as an upper-bound estimate
+      of 2-pass luminosity gain.</td>
+  <td class="ref">&mdash;</td>
+</tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>11. What the Model Does NOT Include</h2>
+<p>The following physical effects are absent from the simulation and represent the
+primary areas for future improvement:</p>
+<ul>
+  <li><strong>Beam-breakup (BBU) instability</strong> &mdash; driven by HOM wake fields,
+      this is the primary current limit for multi-pass ERLs.
+      References: [16, 17].</li>
+  <li><strong>Touschek scattering and intra-beam scattering (IBS)</strong> &mdash;
+      relevant to emittance growth and beam lifetime in the arcs.
+      Reference: [20].</li>
+  <li><strong>Coherent synchrotron radiation (CSR) emittance growth</strong> &mdash;
+      particularly important for short (&lt;1&nbsp;mm) bunches in the arcs.
+      Reference: [18].</li>
+  <li><strong>Nonlinear optics and dynamic aperture</strong> &mdash; chromatic
+      aberrations in the arcs limit the energy acceptance (typically &pm;0.5&ndash;2%).</li>
+  <li><strong>Spin polarisation</strong> &mdash; required for many EIC physics programmes;
+      spin rotation and Siberian snakes are not included.</li>
+  <li><strong>Crab cavities</strong> &mdash; needed to restore head-on geometry when
+      a crossing angle is used.</li>
+  <li><strong>Beam-gas scattering and residual-gas ionisation</strong> &mdash; contribute
+      to emittance growth and beam loss at the 10<sup>&minus;9</sup>&ndash;10<sup>&minus;10</sup>&nbsp;Torr
+      vacuum required.</li>
+  <li><strong>Radiation damage and activation</strong> &mdash; from any beam loss, not modelled.</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>12. Suggested Student Exercises</h2>
+<ol>
+  <li>Vary the SRF quality factor Q<sub>0</sub> from 10<sup>9</sup> to 10<sup>11</sup>
+      and plot the total wall-plug power. At what Q<sub>0</sub> does the cryoplant
+      cease to dominate?</li>
+  <li>Repeat the efficiency analysis with a phase error that grows linearly with pass number
+      (independent errors). How does two-pass compare to one-pass?</li>
+  <li>Replace the round-beam hourglass formula with the exact integral
+      and compare to the approximate result as a function of &sigma;<sub>z</sub>/&beta;*.</li>
+  <li>Add a simple beam-loss term (e.g. 0.1% loss per pass at 10&nbsp;GeV) and recalculate
+      the dump energy and total wall-plug power.</li>
+  <li>Model the SRF static heat load as a fixed fraction (30%) of the dynamic load
+      and determine the new total cryoplant cost.</li>
+  <li>Implement the full Yokoya-Chen beamstrahlung energy-loss distribution (instead
+      of the Gaussian smearing) and compare the post-collision energy spread.</li>
+  <li>Estimate the BBU threshold current using the simplified single-HOM model and
+      compare it to the operating current of 60&nbsp;mA. (See [16, 17].)</li>
+  <li>Design a two-pass ERL with 6&nbsp;GeV/pass (reaching 12&nbsp;GeV) and compare
+      the power budget to the 5&nbsp;GeV/pass case modelled here.</li>
+</ol>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2>References</h2>
+<ol class="ref-list">
+  <li>Hoffstaetter, G.H. et al., &ldquo;CBETA: Cornell-BNL ERL Test Accelerator,&rdquo;
+      <em>IPAC 2017</em>, WEYAA1 (2017).
+      <a href="https://accelconf.web.cern.ch/ipac2017/papers/weyaa1.pdf">WEYAA1</a></li>
+  <li>Ben-Zvi, I. et al., &ldquo;eRHIC Design Study,&rdquo; BNL-94022-2011 (2011).</li>
+  <li>Gruner, S.M. et al., &ldquo;Considerations for a Soft X-Ray Free Electron Laser,&rdquo;
+      <em>Rev. Sci. Instrum.</em> <strong>73</strong>, 1402 (2002).
+      DOI: <a href="https://doi.org/10.1063/1.1445799">10.1063/1.1445799</a></li>
+  <li>Bazarov, I.V. et al., &ldquo;Benchmarking of codes for electron beam brightness
+      and emittance growth from a photoinjector,&rdquo; <em>PRST-AB</em>
+      <strong>11</strong>, 100703 (2008).
+      DOI: <a href="https://doi.org/10.1103/PhysRevSTAB.11.100703">10.1103/PhysRevSTAB.11.100703</a></li>
+  <li>Poelker, M., &ldquo;DC photoguns for ERLs,&rdquo; <em>ERL Workshop</em> 2007.</li>
+  <li>Karkare, S. et al., &ldquo;Ultracold Electrons via Near-Threshold Photoemission
+      from Single-Crystal Cu(100),&rdquo; <em>PRL</em> <strong>125</strong>, 054801 (2020).
+      DOI: <a href="https://doi.org/10.1103/PhysRevLett.125.054801">10.1103/PhysRevLett.125.054801</a></li>
+  <li>Calaga, R. et al., &ldquo;High-current SRF cavity design at 802&nbsp;MHz for the
+      eRHIC ERL,&rdquo; <em>SRF 2009</em>, THPPO077.</li>
+  <li>Neil, G.R. and Merminga, L., &ldquo;Technical approaches for high-average-power
+      free-electron lasers,&rdquo; <em>Rev. Mod. Phys.</em> <strong>74</strong>, 685 (2002).
+      DOI: <a href="https://doi.org/10.1103/RevModPhys.74.685">10.1103/RevModPhys.74.685</a></li>
+  <li>Padamsee, H., Knobloch, J. and Hays, T., <em>RF Superconductivity for Accelerators</em>,
+      2nd ed., Wiley-VCH (2008). ISBN 978-3-527-40842-9.</li>
+  <li>Liepe, M. et al., &ldquo;SRF experience at CEBAF,&rdquo; <em>SRF 2011</em>, MOIOA05.</li>
+  <li>Aune, B. et al., &ldquo;Superconducting TESLA cavities,&rdquo;
+      <em>PRST-AB</em> <strong>3</strong>, 092001 (2000).
+      DOI: <a href="https://doi.org/10.1103/PhysRevSTAB.3.092001">10.1103/PhysRevSTAB.3.092001</a></li>
+  <li>Posen, S. and Hall, D.L., &ldquo;Nb<sub>3</sub>Sn superconducting radiofrequency
+      cavities,&rdquo; <em>Supercond. Sci. Technol.</em> <strong>30</strong>, 033004 (2017).
+      DOI: <a href="https://doi.org/10.1088/1361-6668/30/3/033004">10.1088/1361-6668/30/3/033004</a></li>
+  <li>Faircloth, D. and Hitit, S., &ldquo;RF power sources for particle accelerators,&rdquo;
+      <em>CERN Yellow Report</em> CERN-2011-007, pp. 211&ndash;247 (2011).</li>
+  <li>Wiedemann, H., <em>Particle Accelerator Physics</em>, 4th ed., Springer (2015).
+      ISBN 978-3-319-18317-6.</li>
+  <li>Reiser, M., <em>Theory and Design of Charged Particle Beams</em>, 2nd ed.,
+      Wiley-VCH (2008). ISBN 978-3-527-40741-5.</li>
+  <li>Hoffstaetter, G.H. and Bazarov, I.V., &ldquo;Beam-breakup instability theory for
+      energy recovery linacs,&rdquo; <em>PRST-AB</em> <strong>7</strong>, 054401 (2004).
+      DOI: <a href="https://doi.org/10.1103/PhysRevSTAB.7.054401">10.1103/PhysRevSTAB.7.054401</a></li>
+  <li>Tennant, C. et al., &ldquo;Beam breakup in the Jefferson Laboratory Free Electron
+      Laser upgrade driver,&rdquo; <em>PRST-AB</em> <strong>8</strong>, 074403 (2005).
+      DOI: <a href="https://doi.org/10.1103/PhysRevSTAB.8.074403">10.1103/PhysRevSTAB.8.074403</a></li>
+  <li>Derbenev, Y.S. and Shiltsev, V., &ldquo;Transverse effects of microbunch radiative
+      interaction,&rdquo; FERMILAB-TM-1974 (1996).</li>
+  <li>Tigner, M., &ldquo;A possible apparatus for electron-clashing-beam experiments,&rdquo;
+      <em>Nuovo Cimento</em> <strong>37</strong>, 1228 (1965). [First ERL proposal.]
+      DOI: <a href="https://doi.org/10.1007/BF02773204">10.1007/BF02773204</a></li>
+  <li>Sands, M., <em>The Physics of Electron Storage Rings</em>, SLAC-121 (1970).
+      <a href="https://www.slac.stanford.edu/pubs/slacreports/slac-r-121.html">SLAC-121</a></li>
+  <li>Lonza, M., &ldquo;Multi-bunch feedback systems,&rdquo; <em>CAS RF for
+      Accelerators</em>, CERN-2011-007, pp. 467&ndash;510 (2011).</li>
+  <li>Khalek, R.A. et al. (EIC Yellow Report), <em>Science Requirements and Detector
+      Concepts for the Electron-Ion Collider,&rdquo; Nuclear Physics A</em>
+      <strong>1026</strong>, 122447 (2022).
+      DOI: <a href="https://doi.org/10.1016/j.nuclphysa.2022.122447">10.1016/j.nuclphysa.2022.122447</a></li>
+  <li>Litvinenko, V.N. and Derbenev, Y.S., &ldquo;Coherent electron cooling,&rdquo;
+      <em>PRL</em> <strong>102</strong>, 114801 (2009).
+      DOI: <a href="https://doi.org/10.1103/PhysRevLett.102.114801">10.1103/PhysRevLett.102.114801</a></li>
+  <li>Yokoya, K. and Chen, P., &ldquo;Beam-beam phenomena in linear colliders,&rdquo;
+      in <em>Frontiers of Particle Beams: Intensity Limitations</em>,
+      Lecture Notes in Physics 400, Springer (1992), pp. 415&ndash;445.</li>
+  <li>Bassetti, M. and Erskine, G.A., &ldquo;Closed expression for the electrical field
+      of a two-dimensional Gaussian charge,&rdquo; CERN-ISR-TH/80-06 (1980).</li>
+  <li>Litvinenko, V.N., &ldquo;ERL-based electron-ion colliders,&rdquo;
+      <em>IPAC 2010</em>, WEXRA02 (2010).</li>
+  <li>Hirata, K., &ldquo;Analysis of beam&ndash;beam interaction with a large Piwinski
+      angle,&rdquo; <em>PRST-AB</em> <strong>67</strong>, 1901 (1987).</li>
+  <li>Chen, P., &ldquo;An introduction to beamstrahlung and disruption,&rdquo;
+      in <em>Frontiers of Particle Beams</em>, Lecture Notes in Physics 296,
+      Springer (1988), pp. 495&ndash;532.</li>
+  <li>Trbojevic, D. et al., &ldquo;FFAG lattice for the multi-pass ERL,&rdquo;
+      <em>IPAC 2012</em>, TUPPR006 (2012).</li>
+</ol>
+
+<footer>
+  Generated by <strong>Claude Sonnet 4.6</strong> (Anthropic) as part of the EIC-LHeC mini-project
+  educational exercise &mdash; <em>vibe-coding</em> with AI.<br>
+  Repository: <a href="https://github.com/aseryi/vibe-coding">github.com/aseryi/vibe-coding</a> &nbsp;|&nbsp;
+  Code file: <code>EIC-LHeC/erl_simulation.py</code>
+</footer>
+
+</body>
+</html>
