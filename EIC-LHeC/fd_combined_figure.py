@@ -17,7 +17,7 @@ Usage:
 
 import numpy as np
 import matplotlib
-matplotlib.use('MacOSX')
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -110,13 +110,12 @@ def trace(k1, k2, theta_x, theta_y, n=4000):
 
 def make_combined_figure(out_path):
 
-    # ── font sizes ────────────────────────────────────────────────
-    FS_AXIS   = 13    # axis labels
-    FS_TICK   = 11    # tick labels
-    FS_LEGEND = 11    # legend text
-    FS_TITLE  = 12    # subplot title
-    FS_QLABEL = 11    # Q1/Q2 labels inside plot
-    FS_ANNOT  = 10.5  # max-size annotation boxes
+    # ── font sizes (1.4× original for paper legibility) ──────────
+    FS_AXIS   = 18    # axis labels
+    FS_TICK   = 15    # tick labels
+    FS_LEGEND = 15    # legend text
+    FS_QLABEL = 15    # Q1/Q2 labels inside plot
+    FS_ANNOT  = 15    # max-size annotation boxes
 
     # Quadrupole landmark positions [m]
     q1s = LSTAR
@@ -174,12 +173,6 @@ def make_combined_figure(out_path):
 
         # ── axis labels & title ──────────────────────────────────
         ax.set_ylabel('x  or  y  [mm]', fontsize=FS_AXIS)
-        ax.set_title(
-            '{0} beam,  E = {1:.0f} GeV,  polarity {2}  '
-            '|  max|x| = {3:.2f} mm,  max|y| = {4:.2f} mm'.format(
-                beam_name, bp['E_GeV'], bp['polarity'],
-                mx * 1e3, my * 1e3),
-            fontsize=FS_TITLE)
 
         ax.tick_params(labelsize=FS_TICK)
 
@@ -204,14 +197,14 @@ def make_combined_figure(out_path):
         # ── Q1 / Q2 labels ───────────────────────────────────────
         ylim = ax.get_ylim()
         yspan = ylim[1] - ylim[0]
-        ytop = ylim[1] - 0.04 * yspan
-        ax.text((q1s + q1e) / 2., ytop,
+        ybot = ylim[0] + 0.04 * yspan
+        ax.text((q1s + q1e) / 2., ybot,
                 'Q1\n({0})'.format(q1_type),
-                ha='center', va='top', fontsize=FS_QLABEL,
+                ha='center', va='bottom', fontsize=FS_QLABEL,
                 color='navy', fontweight='bold')
-        ax.text((q2s + q2e) / 2., ytop,
+        ax.text((q2s + q2e) / 2., ybot,
                 'Q2\n({0})'.format(q2_type),
-                ha='center', va='top', fontsize=FS_QLABEL,
+                ha='center', va='bottom', fontsize=FS_QLABEL,
                 color='navy', fontweight='bold')
 
         # ── legend ──────────────────────────────────────────────
@@ -222,9 +215,8 @@ def make_combined_figure(out_path):
     axes[-1].tick_params(labelsize=FS_TICK)
 
     plt.tight_layout()
-    plt.savefig(out_path, dpi=150, bbox_inches='tight')
+    plt.savefig(out_path, bbox_inches='tight')
     print('Saved --> {0}'.format(out_path))
-    plt.show()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -234,5 +226,5 @@ def make_combined_figure(out_path):
 if __name__ == '__main__':
     import os
     out_dir = os.path.dirname(os.path.abspath(__file__))
-    out_path = os.path.join(out_dir, 'FD_combined.png')
+    out_path = os.path.join(out_dir, 'FD_combined.pdf')
     make_combined_figure(out_path)

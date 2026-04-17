@@ -106,14 +106,13 @@ ax.scatter(positrons.z.flatten(), positrons.y.flatten(),
            c='red', s=8, alpha=0.8, label='Positrons', zorder=2)
 
 # Configure axes
-ax.set_xlim(-60, 60)
-ax.set_ylim(-10, 10)
-ax.set_xlabel('Z (longitudinal)', fontsize=12, color='black')
-ax.set_ylabel('Y (vertical)', fontsize=12, color='black')
-ax.set_title('Beam-Beam Collision', fontsize=14, color='black')
+ax.set_xlim(-30, 30)
+ax.set_ylim(-7, 7)
+ax.set_xlabel('Z (longitudinal)', fontsize=24, color='black')
+ax.set_ylabel('Y (vertical)', fontsize=24, color='black')
 
 # Black axes
-ax.tick_params(colors='black', labelsize=10)
+ax.tick_params(colors='black', labelsize=20)
 for spine in ax.spines.values():
     spine.set_color('black')
     spine.set_linewidth(1)
@@ -123,13 +122,13 @@ ax.axhline(y=0, color='gray', linestyle='--', alpha=0.4, linewidth=0.8, zorder=1
 ax.axvline(x=0, color='gray', linestyle='--', alpha=0.4, linewidth=0.8, zorder=1)
 
 # Legend
-ax.legend(loc='upper right', fontsize=10, frameon=True, facecolor='white', edgecolor='black')
+ax.legend(loc='upper right', fontsize=20, frameon=True, facecolor='white', edgecolor='black')
 
 plt.tight_layout()
 
-# Save as PNG
-output_path = "/Users/seryi/Library/CloudStorage/GoogleDrive-andrei.seryi@gmail.com/My Drive/Claude/vibe-coding/beam-beam/beam_beam_collision.png"
-plt.savefig(output_path, dpi=300, facecolor='white', edgecolor='none', bbox_inches='tight')
+# Save as PDF
+output_path = "/Users/seryi/Library/CloudStorage/GoogleDrive-andrei.seryi@gmail.com/My Drive/Claude/vibe-coding/beam-beam/beam_beam_collision.pdf"
+plt.savefig(output_path, facecolor='white', edgecolor='none', bbox_inches='tight')
 print(f"Figure saved to: {output_path}")
 
 plt.close()
