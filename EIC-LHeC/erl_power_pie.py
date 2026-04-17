@@ -34,7 +34,7 @@ colors = ["#1f77b4",   # blue   – dump
 # ── Figure layout ─────────────────────────────────────────────────────────
 # JACoW single column: 8.6 cm = 3.386 in wide.
 fig, ax = plt.subplots(figsize=(3.38, 2.60))   # inches: 8.59 × 6.6 cm
-fig.subplots_adjust(left=0.0, right=0.56, top=0.88, bottom=0.02)
+fig.subplots_adjust(left=0.0, right=0.56, top=0.97, bottom=0.02)
 
 # ── Pie chart ─────────────────────────────────────────────────────────────
 # Sort by value so legend reads large-to-small
@@ -96,9 +96,7 @@ ax.text(0, -0.18, f"{total/1e3:.2f} MW", ha="center", va="center",
         fontsize=9.5, fontweight="bold", color="#111111")
 
 # ── Title ─────────────────────────────────────────────────────────────────
-ax.set_title("Single-pass ERL  —  wall-plug power budget\n"
-             r"(10 GeV, 60 mA,  $f_\mathrm{RF}=801.58$ MHz)",
-             fontsize=7.5, pad=4, loc="center")
+# Title removed — caption provided in LaTeX \caption{}
 
 fig.savefig("ERL_power_pie.png",
             dpi=300, bbox_inches="tight",
