@@ -187,7 +187,7 @@ Peak lumi. $\mathcal{L}$, cm$^{-2}$s$^{-1}$        & $1.05\times10^{34}$ & $6.0\
 
 \textbf{Resolving parameter inconsistencies in the hybrid.}
 When asked to combine EIC proton parameters with LHeC electron parameters, 
-the AI correctly identified two fundamental conflicts before producing any 
+the AI correctly identified three fundamental conflicts before producing any 
 code. (i)~\textit{Bunch rate mismatch:} the EIC ring (3834~m circumference, 
 1160 bunches) gives a collision frequency of $\sim$91~MHz, while the LHeC 
 electron linac assumes $\sim$40~MHz; naively combining the two implies 
@@ -273,10 +273,11 @@ The initial hybrid satisfies the CD0 lower boundary with unmodified EIC
 proton emittances; $\xi_p < 0.01$ in both configurations. The large 
 electron $\xi_e$ reflects severe single-pass disruption -- acceptable 
 since electrons are discarded after collision, but raising questions 
-about ERL acceptance for the disrupted bunch. The optimized case 
+about ERL acceptance for the disrupted bunch (addressed in the 
+\textit{Energy recovery evaluations} section). The optimized case 
 reaches $10^{34}$~cm$^{-2}$s$^{-1}$ through emittance reductions; 
 proton divergences up to 182~\textmu rad horizontally imply tight FD 
-aperture requirements.
+aperture requirements (see \textit{IR optics evaluations}).
 
 
 \section{Beam--beam evaluations}
@@ -431,34 +432,36 @@ Cost estimates for the hybrid electron complex, IR, and detector were
 developed using AI-assisted parametric scaling from the LHeC  study~\cite{LHeC-costs}, excluding upgrades to proton infrastructure. 
 Two linac configurations were compared: a single-pass 10~GeV SRF linac 
 and a recirculating 6~GeV linac traversed twice (or three times for 
-18~GeV), analogous to CEBAF and the LHeC design. The recirculating option  
-$\sim$halves the dominant SRF, civil, and cryo costs while adding modest 
+18~GeV), analogous to CEBAF and the LHeC design. The recirculating option 
+halves the dominant SRF, civil, and cryo costs while adding modest 
 arc costs (70~MCHF, 100~PY), saving $\sim$62~MCHF and $\sim$250 
 person-years (PY) overall -- making it the preferred option. 
-Estimated totals are: electron complex 280--450~MCHF (450--720~PY), IR 50~MCHF 
+Estimated totals are: electron complex 278~MCHF (451~PY), IR 50~MCHF 
 (50~PY), detector 250~MCHF (100~PY), giving a grand total of 
-580--750~MCHF (600--870~PY). These ranges were obtained from estimates by two AI models \cite{cost-verification}; IR and detector 
+$\sim$578~MCHF (601~PY). These figures were scaled with AI assistance 
+and should be regarded as order-of-magnitude only; IR and detector 
 line items were manually increased above the raw AI output.
 
-Converting to USA DOE accounting and  adding 60\% contingency reflecting the preliminary nature of the 
-estimate, yields the summary in Table~\ref{tab:cost-doe}. The hybrid EIC  (with 6 GeV recirculating linac) total of 
-1.4 -- 1.9~B~USD is comfortably below the upper bound of the CD1-approved 
-EIC cost range of \$1.7--2.8~B -- confirming the earlier stated intuitive motivation that led to  
-evaluation of this hybrid EIC concept.
+Converting to USA DOE accounting (1~CHF~$=$~1.25~USD; labor at 
+300k~USD/PY; 60\% contingency reflecting the preliminary nature of the 
+estimate) yields the summary in Table~\ref{tab:cost-doe}. The hybrid EIC  (with 6 GeV recirculating linac) total of 
+$\sim$1.4~B~USD is approximately half the upper bound of the CD0-approved 
+EIC cost range -- a factor-of-two margin that justifies more detailed 
+evaluation of the hybrid concept.
 
 \begin{table}[!hbt]
 \centering
-\caption{Hybrid EIC cost range, estimated by two independent AI-assisted scalings of the LHeC CDR cost. The two estimates agree to within $\sim$30 \% at the pre-contingency level.}
+\caption{Hybrid EIC cost, estimated by AI-generated code.}
 \label{tab:cost-doe}
 \begin{tabular}{lc}
 \toprule
 \textbf{Item} & \textbf{Value (MUSD)} \\
 \midrule
-Material costs (580--750~MCHF $\times$ 1.25)\!\!\!\!\!\!  & 725 -- 935 \\
-Labor costs (600--870~PY $\times$ 300k USD)\!\!\!\!\!\!   & 180 -- 260 \\
-Pre-contingency total                    & 905 -- 1195 \\
-Contingency (60\%)                       & 545 -- 720 \\
-\textbf{Total with contingency}          & \textbf{1450 -- 1915} \\
+Material costs (578~MCHF $\times$ 1.25)  & 722.2 \\
+Labor costs (601~PY $\times$ 300k USD)   & 180.5 \\
+Pre-contingency total                    & 902.7 \\
+Contingency (60\%)                       & 541.6 \\
+\textbf{Total with contingency}          & \textbf{1444.3} \\
 \bottomrule
 \end{tabular}
 \end{table}
