@@ -38,8 +38,10 @@
 %%   \setlength\titleblockendskip{..}    %afterauthor, default 1em
 
 %\PassOptionsToPackage{draft}{hyperref}
+
 \begin{document}
-\hypersetup{draft}
+
+%\hypersetup{draft}
 % To remove links from references, per IPAC guidance
 %\renewcommand{\url}[1]{\texttt{#1}}
 
@@ -52,11 +54,52 @@
 %%%%% If you need to modify the content of this block, do it by modifying the  %%%%%
 \title{ACCELERATOR DESIGN EDUCATIONAL PRIMER – CONCEPTUALIZING AND OPTIMIZING THE HYBRID LHEC-LIKE ELECTRON-ION COLLIDER DESIGN\thanks{Developed with assistance from AI such as Claude, Gemini, etc.}}
 
-\author{A.~Seryi\thanks{aseryi@odu.edu}, L.~van Riesen-Haupt, Old Dominion University,  
-A.~Formenti, A.~Huebl, R.~Lehe, \\
-Ch.~Mitchell, Ji~Qiang, J.-L.~Vay, E.~Zoni, Lawrence Berkeley National Laboratory, United States\\ 
-C.~A.~Lindstrøm, Department of Physics, University of Oslo, Oslo, Norway\\ 
-T.~Pieloni, L.~Vanhecke, École Polytechnique Fédérale de Lausanne, Lausanne, Switzerland}
+% A.S. - this version also adds two more lines to the header, but managed to fit to 5 pages by trimming some words here and there to save lines 
+\author{
+A.~Seryi\textsuperscript{1}\thanks{aseryi@odu.edu},
+A.~Formenti\textsuperscript{2}, 
+A.~Huebl\textsuperscript{2}, 
+R.~Lehe\textsuperscript{2},
+C.~A.~Lindstrøm\textsuperscript{3},
+C.~Mitchell\textsuperscript{2}, 
+T.~Pieloni\textsuperscript{4}, 
+J.~Qiang\textsuperscript{2}, \\
+L.~van Riesen-Haupt\textsuperscript{1},
+L.~Vanhecke\textsuperscript{4},
+J.-L.~Vay\textsuperscript{2}, 
+E.~Zoni\textsuperscript{2}, \\
+\textsuperscript{1}Old Dominion University, Norfolk, USA \\
+\textsuperscript{2}Lawrence Berkeley National Laboratory, USA\\
+\textsuperscript{3}Department of Physics, University of Oslo, Oslo, Norway\\
+\textsuperscript{4}École Polytechnique Fédérale de Lausanne, Lausanne, Switzerland
+}
+
+% The most compact version
+%\author{A.~Seryi\thanks{aseryi@odu.edu}, L.~van Riesen-Haupt, Old Dominion University,  
+%A.~Formenti, A.~Huebl, R.~Lehe, \\
+%C.~Mitchell, J.~Qiang, J.-L.~Vay, E.~Zoni, Lawrence Berkeley National Laboratory, United States\\ 
+%C.~A.~Lindstrøm, Department of Physics, University of Oslo, Oslo, Norway\\ 
+%T.~Pieloni, L.~Vanhecke, École Polytechnique Fédérale de Lausanne, Lausanne, Switzerland}
+
+% FYI, I have seen the authors formatted like this in another IPAC draft:
+% A.S. - however, it adds two more lines to the header
+%\author[1]{A.~Seryi\thanks{aseryi@odu.edu}}
+%\author[1]{L.~van Riesen-Haupt}
+%\author[2]{A.~Formenti}
+%\author[2]{A.~Huebl}
+%\author[2]{R.~Lehe}
+%\author[2]{C.~Mitchell}
+%\author[2]{J.~Qiang} 
+%\author[2]{J.-L.~Vay}
+%\author[2]{E.~Zoni}
+%\author[3]{C.~A.~Lindstrøm}
+%\author[4]{T.~Pieloni}
+%\author[4]{L.~Vanhecke}
+%
+%\affil[1]{Old Dominion University}
+%\affil[2]{Lawrence Berkeley National Laboratory, United States}
+%\affil[3]{Department of Physics, University of Oslo, Oslo, Norway}
+%\affil[4]{École Polytechnique Fédérale de Lausanne, Lausanne, Switzerland}
 
 \maketitle
 
@@ -66,7 +109,11 @@ T.~Pieloni, L.~Vanhecke, École Polytechnique Fédérale de Lausanne, Lausanne, 
 \begin{abstract}
 The Electron-Ion Collider (EIC) Mission Need requires $\sqrt{s}$ = 20–100 GeV (upgradable to 140 GeV) and luminosity 10$^{33}$–10$^{34}$ cm$^{-2}$ s$^{-1}$. The current ring--ring baseline achieves the full scope, including $\sim$10$^{34}$ cm$^{-2}$ s$^{-1}$ across all energies. However, when the design is re-optimized for the lower boundary -- accepting ~10$^{33}$ cm$^{-2}$ s$^{-1}$ and prioritizing cost -- an alternative configuration emerges as more advantageous: a hybrid LHeC-like electron accelerator using multi-pass energy recovery linacs (ERL).
 This solution reduces electron-beam power by roughly an order of magnitude, yielding nearly a factor of two reduction in total project cost compared with the present baseline while still satisfying the minimum physics requirements. The study performs parametric cost and performance modeling, augmented by AI-driven optimization, to explore this design space.
-Serving primarily as an educational exercise for the next generation of accelerator physicists and engineers, the paper demonstrates modern design methods: rapid parametric scans, cost-driven optimization, and integration of AI tools. It examines technical feasibility, identifies critical R\&D (high-current ERL operation, beam--beam effects, synchronization, etc.), and discusses how such re-optimization studies can be used to train designers in an era when AI dramatically expands exploration of complex accelerator parameter spaces.
+Serving primarily as an educational exercise for the next generation of accelerator 
+experts
+%designers, 
+%physicists and engineers, 
+the paper demonstrates modern design methods: rapid parametric scans, cost-driven optimization, and integration of AI tools. It examines technical feasibility, identifies critical R\&D (high-current ERL operation, beam--beam effects, synchronization, etc.), and discusses how such re-optimization studies can be used to train designers in an era when AI dramatically expands exploration of complex accelerator parameter spaces.
 \end{abstract}
 
 \section{Preamble -- AI and Education}
@@ -76,11 +123,16 @@ unprecedented opportunities for accelerator physics education. Institutions
 like Fermilab and CERN, which host accelerator school USPAS and CAS, need to rapidly adapt their pedagogical 
 approaches, and the Genesis program~\cite{Genesis} in the US further encourages 
 AI for accelerated design of particle accelerators. A natural vehicle for developing 
-design skills is the focused mini-project such as Refs.~\cite{USPAS2016,USPAS2023}, where students tackle a realistic 
-challenge in a short intensive period. This paper rehearses what such a 
-mini-project looks like when AI tools are available at every stage -- from 
+design skills is the 
+%focused 
+mini-project such as Refs.~\cite{USPAS2016,USPAS2023}, where students tackle a realistic 
+challenge in a short 
+%intensive 
+period. This paper rehearses what such a 
+mini-project looks like when AI tools are available %at every stage 
+-- from 
 parameter optimization and code generation to cost estimation -- serving 
-as a draft script for future AI-assisted USPAS courses.
+as a draft script for future AI-assisted USPAS or CAS courses.
 
 \section{EIC-LHeC mini-project}
 
@@ -94,8 +146,7 @@ ring-ring baseline.}
 \begin{figure}[!htb]
    \centering
    \includegraphics*[width=\columnwidth]{rhic-to-eic-lhec-layout2c}
-   \caption{Schematic layout of the EIC built as an LHeC-like hybrid with energy recovery. 
-   }
+   \caption{Schematic layout of the EIC built as an LHeC-like hybrid with energy recovery.} 
    \label{fig:lhec-layout}
 \end{figure}
 
@@ -150,7 +201,7 @@ prompts, outputs, and generated codes are available at~\cite{GitHub}.
 
 \textbf{Baseline EIC and LHeC reference parameters.}
 Table~\ref{tab:lhec-eic} shows abridged parameter sets for the two parent 
-designs; full tables are in~\cite{EIC-pars,ESPP-LHeC}.
+designs; full tables are in~\cite{EIC-pars,ESPP-LHeC} and review of both designs in \cite{10.3389/fphy.2022.886473}.
 
 %April 28: this was indeed the origin of inconsistency in the initially generated parameters. (CHECK: LHeC rep rate 40 MHz and why initial Grok code gave it 32 MHz value?)
 
@@ -195,7 +246,7 @@ $\sim$140~mA electron current, far beyond the 60~mA LHeC design value.
 (ii)~\textit{Beam size mismatch:} LHeC electron optics 
 ($\beta^*_{x,y}=0.20$~m, $\varepsilon_n=22$~\textmu m) were optimized for 
 the $\sim$10~\textmu m LHC proton beam, whereas EIC protons at 275~GeV give 
-$\sigma_x\approx173$~\textmu m at the same $\beta^*$. 
+$\sigma_x\approx48$~\textmu m at the same $\beta^*$. 
 %
 %(iii)~\textit{Current limits:} maintaining $N_e\approx1.19\times10^{10}$ at 
 %the EIC rate requires $\sim$145~mA; enforcing 60~mA instead would reduce 
@@ -210,10 +261,11 @@ match beam sizes ($\beta^*_x=1.20$~m, $\beta^*_y=0.05$~m for electrons;
 $\beta^*_x=0.12$~m, $\beta^*_y=0.06$~m for protons). The AI also noted 
 that $\xi_e$ is unconstrained in a linac-ring scheme since electrons are 
 discarded after each pass; only the proton beam--beam parameter was 
-constrained to $\xi_p < 0.01$. A further step explored 
+constrained to $\xi_p < 0.01$. 
+A further step explored 
 $\mathcal{L}=10^{34}$~cm$^{-2}$s$^{-1}$ via: (i)~proton emittance 
 reduction through coherent electron cooling; and (ii)~vertical electron 
-emittance reduction by a factor of ten using a magnetized gun and 
+emittance reduction by a factor of 10 using a magnetized gun and 
 Derbenev's flat-beam transformer\cite{derbenev}.
 
 \textbf{Hybrid EIC-LHeC parameter sets.}
@@ -240,8 +292,8 @@ $\sigma_{x/y}$ at IP     & 36.7 / 7.5   & 36.8 / 7.8  & \textmu m \\
 $\sigma'_{x/y}$ at IP    & 30.6 / 149.9 & 306.3 / 130.6 & \textmu rad \\
 $\xi_{x/y}$              & 3.474 / 0.679 & 0.001 / 0.002 & \\
 $I_{beam}$               & 57.6  & 1000  & mA \\
-\midrule
-$\sigma_{x/y}^{eff}$ at IP & \multicolumn{2}{c}{52.0 / 10.8} & \textmu m \\
+%\midrule
+%$\sigma_{x/y}^{eff}$ at IP & \multicolumn{2}{c}{52.0 / 10.8} & \textmu m \\
 Peak $\mathcal{L}$         & \multicolumn{2}{c}{$2.1\times10^{33}$} & cm$^{-2}$s$^{-1}$ \\
 \bottomrule
 \end{tabular}
@@ -262,8 +314,8 @@ $\beta^*_{x/y}$ at IP    & 0.25 / 0.10  & 0.09 / 0.05 & m \\
 $\sigma_{x/y}$ at IP     & 16.8 / 3.4   & 16.8 / 3.6  & \textmu m \\
 $\sigma'_{x/y}$ at IP    & 66.8 / 32.7  & 182.4 / 77.8 & \textmu rad \\
 $\xi_{x/y}$              & 3.474 / 6.789 & 0.003 / 0.007 & \\
-\midrule
-$\sigma_{x/y}^\mathrm{eff}$ at IP & \multicolumn{2}{c}{23.8 / 5.0} & \textmu m \\
+%\midrule
+%$\sigma_{x/y}^\mathrm{eff}$ at IP & \multicolumn{2}{c}{23.8 / 5.0} & \textmu m \\
 Peak $\mathcal{L}$         & \multicolumn{2}{c}{$1.0\times10^{34}$} & cm$^{-2}$s$^{-1}$ \\
 \bottomrule
 \end{tabular}
@@ -281,18 +333,21 @@ aperture requirements.
 
 \section{Beam--beam evaluations}
 
-Beam--beam collisions, highly asymmetrical for EIC hybrid, can be evaluated using existing codes, but can be also studied using AI-generated code. A simplified 2D beam--beam code was written by Claude AI in a few minutes from a paragraph-long prompt (the IT community describe this process as vibe coding) -- see the Python code at \cite{GitHub} and beam--beam simulation illustration in Fig.~\ref{fig:beam-beam}. 
+Beam--beam collisions, highly asymmetrical for EIC hybrid, can be evaluated using existing codes~\cite{BeamBeam3d,combi}, but can be also studied using AI-generated code. A simplified 2D beam--beam code was written by Claude AI in a few minutes from a paragraph-long prompt (the IT community describe this process as vibe coding).
+%-- see the Python code at \cite{GitHub} and beam--beam simulation illustration in Fig.~\ref{fig:beam-beam}. 
 
 \begin{figure}[!htb]
    \centering
    \includegraphics*[width=\columnwidth]{beam_beam_collision}
-   \caption{Beam--beam collision calculated by the AI-generated code. Arbitrary units. Electrons are moving right. 
+   \caption{Beam--beam collision calculated by the AI-generated code. Normalized units. Electrons are moving right. Positrons (or protons) are moving left. 
    }
    \label{fig:beam-beam}
 \end{figure}
 
-The beam--beam simulation code was generated from a single paragraph-long 
-prompt, reproduced here to illustrate the level of physical detail required 
+%The beam--beam simulation code was generated from a single paragraph-long 
+%prompt, 
+
+That prompt is reproduced here to illustrate the level of physical detail required 
 to obtain useful AI-generated code. The prompt specified: a 2D head-on 
 collision (longitudinal $Z$ and vertical $Y$ coordinates only); each bunch 
 represented by 50 transverse slices of 21 particles, placed equidistantly 
@@ -308,13 +363,14 @@ the full collision.
 Visualization of the collision dynamics was requested from the outset. 
 The AI (Claude) produced working, animated code on the first attempt. 
 Five short follow-up prompts then corrected the kick sign, tuned $D_Y$, added offset collisions, and improved the visualization display.
-The entire exchange -- initial prompt plus five follow-up adjustments -- 
+The entire exchange -- initial prompt plus follow-up adjustments -- 
 took a few minutes and required no debugging of code syntax by the author. 
-The prompt and the resulting Python code are available at~\cite{GitHub}.
+The prompt and the resulting Python code are available at~\cite{GitHub} 
+and beam--beam simulation is illustrated in Fig.~\ref{fig:beam-beam}.
 
 This capability suggests a transformative shift in how students learn. Rather than passively attending lectures or running decades-old legacy codes, students could actively create simplified simulation codes, then iteratively refine them through AI-assisted modifications to explore different physics phenomena.
 
-For the specific example of EIC-LHeC hybrid mini-project, students could progressively enhance their understanding by first converting the code to use of physical units; then implementing realistic beam distributions with emittance and beta-functions; adjusting input parameters to match those of EIC-LHeC hybrid; adding luminosity calculations; investigating how luminosity depends on asymmetry of disruption parameters and beam offsets; measuring angular distribution of highly disrupted electron beam. 
+For the specific example of EIC-LHeC hybrid mini-project, students could progressively enhance their understanding by first converting the code to use of physical units; then implementing realistic beam distributions with emittance and beta-functions; adjusting input parameters to match those of EIC-LHeC hybrid; adding luminosity calculations; investigating how luminosity depends on asymmetry of disruption parameters and beam offsets; measuring angular distribution of highly disrupted electron beam; evaluating the hour-glass effects or crab-crossing configurations. 
 
 \section{IR Optics and Magnets}                                                
    
@@ -363,9 +419,10 @@ For the electron beam the complementary QD--QF polarity is
                     \begin{figure}[!htb]
    \centering
    \includegraphics*[width=\columnwidth]{FD_combined}
-   \caption{Hybrid EIC-LHeC FD produced via vibe-coding. Electrons (10 GeV, top plot) and protons  (275 GeV, bottom). 
+   \caption{Hybrid EIC-LHeC FD produced via vibe-coding. Electrons (10 GeV, top plot) and protons  (275 GeV, bottom).
    }
    \label{fig:fd-combined}
+   \vspace*{-1mm}
 \end{figure}        
 
 \begin{figure}[!htb]
@@ -374,6 +431,7 @@ For the electron beam the complementary QD--QF polarity is
    \caption{Hybrid EIC-LHeC FD stay-clear vs $L^*$ and SC magnet technology analyzed via vibe-coding (with 19 mm shielding and internals subtracted). 
    }
    \label{fig:fd-technology}
+      \vspace*{-1mm}
 \end{figure}        
 
 
@@ -387,11 +445,11 @@ For a quadrupole of gradient $G$, the maximum achievable aperture radius
   quantify the available margin; from collider IR experience    
   $N_{X,Y}\gtrsim15$ is required to accommodate orbit offsets, beam halo,        
   and tolerances.  
-Assuming that magnet technologies, NbTi at 4.2~K, NbTi at 1.9~K, and Nb$_3$Sn at 4.2~K, allow peak bore field of 7 T, 8.5 T and 12 T correspondingly, the EIC-LHeC hybrid proton FD (the most constrained) was analyzed with Gemini AI, varying the $L^*$ parameter. The resulting beam stay clear is shown in Fig.~\ref{fig:fd-technology}, indicating the preference for NbTi at 1.9~K.     
-  For the electron FD, the required gradients are so low that SC magnets are in principle unnecessary; however SC approach may be required for practical purposes of integration within tightly constrained FD. 
+Assuming that magnet technologies, NbTi at 4.2~K, NbTi at 1.9~K, and Nb$_3$Sn at 4.2~K, allow peak bore field of 7 T, 8.5 T and 12 T correspondingly, the EIC-LHeC hybrid proton FD (the most constrained) was analyzed with Gemini AI, varying the $L^*$ parameter. The resulting algorithm took into account extra aperture for shielding, cold-bore, insulation and beam screen based on scaling from FCC-hh~\cite{van_riesen-haupt:ipac18-mopmk007} and redistributed the 4~m magnetic length to maximize beam stay clear, the result is shown in Fig.~\ref{fig:fd-technology}, indicating the preference for NbTi at 1.9~K.     
+For the electron FD, the required gradients are so low that SC magnets are in principle unnecessary; however SC approach may be required for practical purposes of integration within tightly constrained FD. 
   
 
-Further steps, within the students' EIC-LHeC mini-project, can include varying FD quadrupole lengths and other FD parameters, as well as evaluating the aperture-to-beam-size ratio for the electron beam disrupted after IP collision. 
+%Further steps, within the students' EIC-LHeC mini-project, can include varying FD quadrupole lengths and other FD parameters, as well as evaluating the aperture-to-beam-size ratio for the electron beam disrupted after IP collision. 
 
 
 \section{Energy Recovery Evaluations}                                      
@@ -419,7 +477,7 @@ Further steps, within the students' EIC-LHeC mini-project, can include varying F
   \end{figure}       
                                                                              
   \textbf{Energy recovery results.}     
-  The AI model produced a code at the first iteration, reach with physics, including Yokoya-Chen beam--beam approximation, SR losses, comparison of single or two pass ERL with rings of different size -- offering vast opportunities for discussion with students about validity and applicability of approaches \cite{erl-ai-assumptions}.  The simulation confirms an energy recovery efficiency of 99.93\%,          
+  The AI model produced a code at the first iteration, rich with physics, including Yokoya-Chen beam--beam approximation, SR losses, comparison of single or two pass ERL with rings of different size -- offering vast opportunities for discussion with students about validity and applicability of approaches \cite{erl-ai-assumptions}.  The simulation confirms an energy recovery efficiency of 99.93\%,          
   reducing the wall-plug power from 602~MW (no recovery) to 7.0~MW. Figure~\ref{fig:erl-power} shows the single-pass power budget              
   breakdown. 
                                                                               
@@ -432,7 +490,7 @@ developed using AI-assisted parametric scaling from the LHeC  study~\cite{LHeC-c
 Two linac configurations were compared: a single-pass 10~GeV SRF linac 
 and a recirculating 6~GeV linac traversed twice (or three times for 
 18~GeV), analogous to CEBAF and the LHeC design. The recirculating option  
-$\sim$halves the dominant SRF, civil, and cryo costs while adding modest 
+approximately halves the dominant SRF, civil, and cryo costs while adding modest 
 arc costs (70~MCHF, 100~PY), saving $\sim$62~MCHF and $\sim$250 
 person-years (PY) overall -- making it the preferred option. 
 Estimated totals are: electron complex 280--450~MCHF (450--720~PY), IR 50~MCHF 
@@ -442,7 +500,7 @@ line items were manually increased above the raw AI output.
 
 Converting to USA DOE accounting and  adding 60\% contingency reflecting the preliminary nature of the 
 estimate, yields the summary in Table~\ref{tab:cost-doe}. The hybrid EIC  (with 6 GeV recirculating linac) total of 
-1.4 -- 1.9~B~USD is comfortably below the upper bound of the CD1-approved 
+1.4--1.9~B~USD is comfortably below the upper bound of the CD1-approved 
 EIC cost range of \$1.7--2.8~B -- confirming the earlier stated intuitive motivation that led to  
 evaluation of this hybrid EIC concept.
 
@@ -464,7 +522,7 @@ Contingency (60\%)                       & 545 -- 720 \\
 \end{table}
 
 
-A method for more advanced cost optimization for this hybrid machine that could be investigated by students is that used by the plasma--RF hybrid collider concept HALHF \cite{HALHF2023}. This method, described in Refs.~\cite{HALHF_ESSPU,HALHF_IPAC}, first builds a simplified physics model of all the major subsystems of the collider, then uses a small number of key input parameters (e.g., energies, collision frequency, accelerating gradients, etc.) to calculate lengths, power and other requirement for each subsystem, and finally converts this to an overall cost via cost estimates from similar machines. The global cost optimum is then found (approximately) using Bayesian optimization; a computationally economical machine-learning optimization method. While for HALHF this was performed using the start-to-end simulation framework ABEL \cite{ABEL,ABEL_GITHUB}, a more simplified code for the same purpose is available at \cite{COSTMODEL} -- the latter being more suitable for AI training and code generation.
+A method for more advanced cost optimization for this hybrid machine that could be investigated by students is that used by the plasma--RF hybrid collider concept HALHF \cite{HALHF2023}. This method, described in Refs.~\cite{HALHF_ESSPU,HALHF_IPAC}, first builds a simplified physics model of all the major subsystems of the collider, then uses a small number of key input parameters (energies, collision frequency, accelerating gradients, etc.) to calculate lengths, power and other requirement for subsystems, and finally converts this to an overall cost via cost estimates from similar machines. The global cost optimum is then found (approximately) using Bayesian optimization; a computationally economical machine-learning optimization method. While for HALHF this was performed using the start-to-end simulation framework ABEL \cite{ABEL,ABEL_GITHUB}, a more simplified code for the same purpose is available at \cite{COSTMODEL} -- the latter being more suitable for AI training and code generation.
 
  
 \section{Required R\&D and Next Steps}
@@ -474,7 +532,7 @@ dedicated R\&D before the design can be considered credible at
 project-proposal level. The principal challenges, identified in dialogue 
 with AI, are the following. \textit{High-current ERL operation:} 
 fractional energy loss $\lesssim 10^{-4}$ is required at 58~mA and 
-10~GeV; a staged program at CEBAF (high energy, low current) and PERLE 
+10~GeV; a staged CEBAF test (high energy, low current) and PERLE 
 (low energy, high current) would bound the two critical parameters. 
 \textit{Polarized source current:} 58~mA far exceeds the state of the 
 art ($\sim$1~mA CW); multiplexing $N$ sources via RF mergers is a 
@@ -488,7 +546,8 @@ emittances assumed in the $10^{34}$ configuration.
 \textit{Disrupted-beam energy recovery:} with $\xi_y^e \approx 6.8$, 
 the electron bunch is severely disrupted; whether the resulting 
 phase space fits within ERL return-arc acceptance requires dedicated 
-simulation.
+simulation. 
+Beam halo, instability, and their mitigation in the ERL, are to be studied as well.
 
 Logical next steps are: beam--beam parameter scans with strong-strong 
 codes; conceptual IR lattice and MDI design; ERL lattice and 
@@ -503,11 +562,11 @@ conceptual phase without replacing rigorous engineering analysis.
 
 \section{Verification of AI results}
 
-Verification of AI-generated results follows a three-pronged approach, both prongs of which reinforce our belief that students will learn accelerator physics from this educational style rather than be displaced by it.
+Verification of AI-generated results follows a three-pronged approach, all of which reinforce our belief that students will learn accelerator physics from this educational style rather than be displaced by it.
 
 The first prong is human verification by the student. Returning to the beam--beam example introduced earlier, the student progresses from a toy 2D simulation to increasingly realistic versions, where at each step the student is encouraged to design diagnostic tests that interrogate the AI-generated code: does momentum balance? Does the code reproduce the analytic Yokoya--Chen pinch enhancement? Does the disruption scale as expected with bunch charge? Such tests turn the AI from an oracle into a collaborator whose output the student must judge against first principles. 
 
-The second prong is cross-verification by a second, independent AI model. The parameter tables of this paper were initially generated with an AI model in summer 2025 and subsequently cross-checked with Claude, which flagged a small number of internal inconsistencies that have since been corrected~\cite{pars-verification}. Independent re-derivation by a different model is cheap, fast, and surprisingly effective at catching unit slips, mixed-convention errors, and copy-paste residues that single-model workflows tend to propagate.
+The second prong is cross-verification by a second, independent AI model. The parameter tables of this paper were initially generated with an AI model in summer 2025 and subsequently cross-checked with Claude, which flagged a small number of internal inconsistencies that have since been corrected~\cite{pars-verification}. Independent re-derivation by a different model is cheap, fast, and surprisingly effective at catching unit slips, mixed-convention errors, and copy-paste residues that single-model workflows tend to propagate \cite{arbuzov2026beyond,gan2025rethinking}.
 
 The third prong is benchmarking against established first-principles simulations. AI-generated results are compared against well-validated codes whose outputs have been extensively benchmarked against analytic theory and experimental data from previous colliders, providing an independent, quantitative standard against which the AI-assisted workflow must stand. This closes the verification loop: student judgment, cross-model consistency, and fidelity to the existing simulation heritage all reinforce one another.
 
@@ -522,7 +581,11 @@ By employing AI for parameter definition,  simulations, and cost estimations, th
 
 The approach sketched here is a first step, not a finished recipe -- pedagogy, mini-project selection, and verification protocols all need refinement through actual classroom use. With those caveats, we believe it points in the right direction for education in the era of human-AI partnership.
 
-These couple lines may be used for any acknowledgments. These couple lines may be used for any acknowledgments. 
+%Supported in part by the US DOE Genesis Mission \mbox{ModCon} MOAT seed project. 
+The authors acknowledge support by the Old Dominion University. 
+Supported in part by the U.S. DOE’s Genesis Mission and the Office of Science, Office of Advanced Scientific Computing Research's ModCon under Contract No. AC02-05CH11231.
+%These couple lines may be used for any acknowledgments. These couple lines may be used for any acknowledgments. 
+\vspace*{-1mm}
 
  
 
