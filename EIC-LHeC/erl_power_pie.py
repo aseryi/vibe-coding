@@ -51,7 +51,7 @@ wedges, texts, autotexts = ax.pie(
     labels=None,
     colors=cols_s,
     explode=explode,
-    autopct=lambda p: f"{p:.1f}\\%" if p > 4 else "",
+    autopct=lambda p: f"{p:.1f}%" if p > 4 else "",
     pctdistance=0.68,
     startangle=105,
     wedgeprops=dict(linewidth=0.8, edgecolor="white"),
